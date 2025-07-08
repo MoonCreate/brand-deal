@@ -1,0 +1,16 @@
+{
+  "name": "~backend",
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "start": "vercel dev",
+    "deploy": "vercel"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "^0.7.0",
+    "hono": "^4.8.4",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "vercel": "^32.4.1"
+  }
+}
