@@ -1,22 +1,70 @@
-import { Hono } from "hono";
-import { homeController } from "./domains/home/home.controller";
-import { registerController } from "./domains/register/register.controller";
-import { cors } from 'hono/cors';
-import { PinataSDK } from 'pinata'
+import { ponder } from "ponder:registry";
+import { brand, creator, campaign, creatorPool } from "ponder:schema";
 
-interface Bindings {
-  PINATA_JWT: string;
-  GATEWAY_URL: string;
-}
+ponder.on("PlatformCore:CreatorRegistered", async ({ event, context }) => {
+  const { creatorNFTId, creatorAddress, name, metadataURI } = event.args;
 
-export const config = {
-  runtime: "edge",
-};
+  await context.db.insert(creator).values({
+    creatorWalletAddress: creatorAddress,
+    creatorNFTId: creatorNFTId,
+    name: name,
+    metadataURI: metadataURI,
+    blockNumber: event.block.number,
+    blockTimestamp: event.block.timestamp,
+    transactionHash: event.transaction.hash,
+    logIndex: event.log.logIndex.toString(),
+  });
+});
 
-const app = new Hono<{ Bindings: Bindings }>()
-  .use(cors())
-  .basePath("/api")
-  .route("/home", homeController)
-  .route('/register', registerController);
+ponder.on("PlatformCore:BrandRegistered", async ({ event, context }) => {
+  const { brandNFTId, brandAddress, name, metadataURI } = event.args;
 
-export default app;
+  await context.db.insert(brand).values({
+    brandWalletAddress: brandAddress,
+    brandNFTId: brandNFTId,
+    name: name,
+    metadataURI: metadataURI,
+    blockNumber: event.block.number,
+    blockTimestamp: event.block.timestamp,
+    transactionHash: event.transaction.hash,
+    logIndex: event.log.logIndex.toString(),
+  });
+});
+
+ponder.on("PlatformCore:CampaignCreated", async ({ event, context }) => {
+  const { campaignInstanceId, campaignNFTId, brandAddress, stakedAmount, campaignDeadline, campaignMetadataURI } = event.args;
+
+  await context.db.insert(campaign).values({
+    campaignInstanceId: campaignInstanceId,
+    campaignNFTId: campaignNFTId,
+    stakedAmount: stakedAmount,
+    brandWalletAddress: brandAddress,
+    creatorWalletAddress: '0x0',
+    deadline: campaignDeadline,
+    metadataURI: campaignMetadataURI,
+    status: "OpenForApplication",
+    blockNumber: event.block.number,
+    blockTimestamp: event.block.timestamp,
+    transactionHash: event.transaction.hash,
+    logIndex: event.log.logIndex.toString(),
+  });
+});
+
+ponder.on("PlatformCore:CreatorApply", async ({ event, context }) => {
+  const { campaignInstanceId, creatorAddress } = event.args;
+  const id = `${campaignInstanceId}-${creatorAddress}`;
+  await context.db.insert(creatorPool).values({
+    id: id,
+    campaignInstanceId: campaignInstanceId,
+    creatorWalletAddress: creatorAddress,
+  });
+});
+
+ponder.on("PlatformCore:CreatorWithdraw", async ({ event, context }) => {
+  const { campaignInstanceId, creatorAddress } = event.args;
+  const id = `${campaignInstanceId}-${creatorAddress}`;
+
+  await context.db.delete(creatorPool, {
+    id: id
+  });
+});

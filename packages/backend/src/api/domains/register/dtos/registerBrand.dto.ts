@@ -8,4 +8,5 @@ export const registerBrandDto = z.object({
   web: z.string(),
   socialLink: z.array(z.object({ type: z.string(), link: z.string() })),
   nib: z.string(),
+  walletAddress: z.string(),
 })
