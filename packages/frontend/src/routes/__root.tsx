@@ -4,6 +4,7 @@ import {
   LucideFacebook,
   LucideGithub,
   LucideInstagram,
+  LucideLoader,
   LucideTwitter,
 } from 'lucide-react'
 
@@ -13,6 +14,7 @@ import TanStackQueryLayout from '../integrations/tanstack-query/layout.tsx'
 
 import type { QueryClient } from '@tanstack/react-query'
 import type { Config } from 'wagmi'
+import { Suspense } from 'react'
 
 interface MyRouterContext {
   queryClient: QueryClient
