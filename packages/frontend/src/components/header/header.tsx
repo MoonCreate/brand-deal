@@ -1,6 +1,7 @@
 import { motion } from 'motion/react'
 import { ConnectButton } from '../buttons/connect-button'
 import { Navbar } from '../navbar/navbar'
+import { RegisterButton } from '../buttons/register-button'
 
 export default function Header() {
   return (
@@ -10,7 +11,10 @@ export default function Header() {
     >
       <h1 className="text-4xl font-karantina">BRAND DEAL</h1>
       <Navbar />
-      <ConnectButton />
+      <div className="flex gap-2">
+        <ConnectButton />
+        <RegisterButton />
+      </div>
     </motion.header>
   )
 }

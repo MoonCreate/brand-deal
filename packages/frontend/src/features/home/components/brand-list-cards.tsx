@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { AnimatePresence, motion } from 'motion/react'
+import { motion } from 'motion/react'
 import { LucideTrendingUp } from 'lucide-react'
 import { useGetBrandList } from '@/hooks/use-get-brand-list'
 import { bop } from '@/lib/animation-const'

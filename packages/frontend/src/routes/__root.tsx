@@ -4,9 +4,9 @@ import {
   LucideFacebook,
   LucideGithub,
   LucideInstagram,
-  LucideLoader,
   LucideTwitter,
 } from 'lucide-react'
+import { Toaster } from 'react-hot-toast'
 
 import Header from '../components/header/header'
 
@@ -14,7 +14,7 @@ import TanStackQueryLayout from '../integrations/tanstack-query/layout.tsx'
 
 import type { QueryClient } from '@tanstack/react-query'
 import type { Config } from 'wagmi'
-import { Suspense } from 'react'
+import { DialogProvider } from '@/components/dialog/dialog.tsx'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -26,8 +26,10 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     <>
       <main className="bg-background font-roboto">
         <div className="w-[min(100vw-2rem,1200px)] mx-auto min-h-screen flex flex-col">
-          <Header />
-          <Outlet />
+          <DialogProvider>
+            <Header />
+            <Outlet />
+          </DialogProvider>
         </div>
         {/* FOOTER */}
         <footer className="bg-primary shadow-inner py-20 space-y-10">
@@ -45,9 +47,9 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
             dagang dari PT Jadi Dulu, perusahaan terdaftar di Indonesia.
           </div>
         </footer>
+        <Toaster />
       </main>
       <TanStackRouterDevtools />
-
       <TanStackQueryLayout />
     </>
   ),

@@ -1,16 +1,9 @@
 import { useConnectModal, useProfileModal, useChainModal } from '@xellar/kit'
-import {
-  useAccount,
-  useChainId,
-  useChains,
-  useDisconnect,
-  type Config,
-  type UseAccountReturnType,
-} from 'wagmi'
+import { useAccount } from 'wagmi'
 import { LucideLink, LucideUser, LucideWallet } from 'lucide-react'
+import type { Config, UseAccountReturnType } from 'wagmi'
 import { cn } from '@/lib/utils'
 import { Button } from './button'
-import { useMemo } from 'react'
 
 export function ConnectButton() {
   const account = useAccount()
@@ -47,14 +40,14 @@ function ConnectWallet() {
 function LogoutWallet(props: { account: UseAccountReturnType<Config> }) {
   const chainModal = useChainModal()
   const profileModal = useProfileModal()
-  const chainId = useChainId()
-  const chains = useChains()
 
-  const chain = useMemo(() => chains.find((x) => x.id == chainId), [chainId])
-
+  const chain = props.account.chain
   return (
     <div className="flex gap-2">
-      <Button className={chain ? '' : 'bg-danger'} onClick={chainModal.open}>
+      <Button
+        className={chain ? '' : 'bg-danger hover:bg-danger/60'}
+        onClick={chainModal.open}
+      >
         <LucideLink className="size-4" />
         {chain?.name || 'Wrong Network'}
       </Button>
