@@ -21,9 +21,9 @@ const registerController = new Hono()
       console.log('Received JSON for upload:', jsonData);
 
       const metadata = {
-        "name": jsonData.instanceName,
+        "name": jsonData.name,
         "description": jsonData.description,
-        "image": jsonData.logoBrand,
+        "image": jsonData.image,
         "attributes": [
           {
             "trait_type": "Role",
@@ -32,6 +32,14 @@ const registerController = new Hono()
           {
             "trait_type": "Email",
             "value": jsonData.email
+          },
+          {
+            "trait_type": "Web",
+            "value": jsonData.web
+          },
+          {
+            "trait_type": "NIB",
+            "value": jsonData.nib
           },
           {
             "trait_type": "Social Links",

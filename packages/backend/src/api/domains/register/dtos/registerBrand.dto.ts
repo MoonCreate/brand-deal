@@ -1,8 +1,8 @@
 import z from 'zod';
 
 export const registerBrandDto = z.object({
-  instanceName: z.string(),
-  logoBrand: z.string(),
+  name: z.string(),
+  image: z.string(),
   description: z.string(),
   email: z.string(),
   web: z.string(),

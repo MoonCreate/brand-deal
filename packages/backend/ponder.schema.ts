@@ -16,6 +16,7 @@ export const brand = onchainTable("brand", (t) => ({
   brandNFTId: t.bigint(),
   name: t.text(),
   metadataURI: t.text(),
+  metadata: t.json(),
   blockNumber: t.bigint(),
   blockTimestamp: t.bigint(),
   transactionHash: t.text(),
@@ -29,6 +30,7 @@ export const creator = onchainTable(
     creatorNFTId: t.bigint(),
     name: t.text(),
     metadataURI: t.text(),
+    metadata: t.json(),
     blockNumber: t.bigint(),
     blockTimestamp: t.bigint(),
     transactionHash: t.text(),
@@ -40,7 +42,32 @@ export const creatorPool = onchainTable("creatorPool", (t) => ({
   id: t.text().primaryKey(),
   campaignInstanceId: t.bigint(),
   creatorWalletAddress: t.hex(),
-}))
+}));
+
+// export const metadataCreator = onchainTable("metadataCreator", (t) => ({
+//   metadataUri: t.text().primaryKey(),
+//   name: t.text(),
+//   description: t.text(),
+//   image: t.text(),
+//   email: t.text(),
+// }));
+
+// export const metadataBrand = onchainTable("metadataBrand", (t) => ({
+//   metadataUri: t.text().primaryKey(),
+//   name: t.text(),
+//   description: t.text(),
+//   nib: t.text(),
+//   image: t.text(),
+//   email: t.text(),
+//   web: t.text(),
+// }));
+
+// export const socialLink = onchainTable("socialLink", (t) => ({
+//   id: t.
+//   metadataUri: t.text(),
+//   type: t.text(),
+//   link: t.text(),
+// }));
 
 export const campaign = onchainTable("campaign", (t) => ({
   campaignInstanceId: t.bigint().primaryKey(),

@@ -4,11 +4,16 @@ import { brand, creator, campaign, creatorPool } from "ponder:schema";
 ponder.on("PlatformCore:CreatorRegistered", async ({ event, context }) => {
   const { creatorNFTId, creatorAddress, name, metadataURI } = event.args;
 
+  const resMetadata = await fetch(metadataURI);
+  const metadata = await resMetadata.json()
+
+  console.log(metadata, "creator")
   await context.db.insert(creator).values({
     creatorWalletAddress: creatorAddress,
     creatorNFTId: creatorNFTId,
     name: name,
     metadataURI: metadataURI,
+    metadata: metadata,
     blockNumber: event.block.number,
     blockTimestamp: event.block.timestamp,
     transactionHash: event.transaction.hash,
@@ -18,12 +23,16 @@ ponder.on("PlatformCore:CreatorRegistered", async ({ event, context }) => {
 
 ponder.on("PlatformCore:BrandRegistered", async ({ event, context }) => {
   const { brandNFTId, brandAddress, name, metadataURI } = event.args;
+  
+  const resMetadata = await fetch(metadataURI);
+  const metadata = await resMetadata.json()
 
   await context.db.insert(brand).values({
     brandWalletAddress: brandAddress,
     brandNFTId: brandNFTId,
     name: name,
     metadataURI: metadataURI,
+    metadata: metadata,
     blockNumber: event.block.number,
     blockTimestamp: event.block.timestamp,
     transactionHash: event.transaction.hash,
