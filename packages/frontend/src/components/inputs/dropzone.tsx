@@ -1,25 +1,33 @@
 import { LucideCloudUpload } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'motion/react'
+import toast from 'react-hot-toast'
 import { cn } from '@/lib/utils'
+import { useDebounce } from '@/hooks/use-debounce'
 
 export function DropZone(props: {
   wrapperClassName?: string
   onDrop?: (acceptedFiles: FileList | null) => void
 }) {
   const ref = useRef<HTMLDivElement>(null)
-  const [isOnDrag, setIsOnDrag] = useState(false)
+  const [_isOnDrag, setIsOnDrag] = useState(false)
   const [files, setFiles] = useState<FileList | null>(null)
   const rect = useRef<DOMRect>(null)
+  const isOnDrag = useDebounce(_isOnDrag, { delay: 50 })
+
+
+  useEffect(() => {
+    console.log(isOnDrag)
+  }, [isOnDrag])
   // eslint-disable-next-line no-shadow
   const handleOnDrop: typeof props.onDrop = (files) => {
     if (files && files.length > 1) {
-      return
+      return toast.error("You can't upload more than one file")
     }
     if (files) {
       for (const file of files) {
         if (!file.type.includes('image/')) {
-          return
+          return toast.error('You can only upload images')
         }
       }
     }
@@ -45,6 +53,7 @@ export function DropZone(props: {
       onDrop={(e) => {
         e.preventDefault()
         e.stopPropagation()
+        setIsOnDrag(false)
         handleOnDrop(e.dataTransfer.files)
       }}
       className={cn(
@@ -59,7 +68,7 @@ export function DropZone(props: {
           className="object-cover rounded-xl shadow-box"
           style={{
             width: rect.current?.width,
-            height: rect.current?.height
+            height: rect.current?.height,
           }}
         />
       ) : (
