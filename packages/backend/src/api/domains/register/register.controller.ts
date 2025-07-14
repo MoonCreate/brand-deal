@@ -60,7 +60,9 @@ const registerController = new Hono()
 
       console.log('Pinata upload successful:', upload.cid);
 
-      return c.json(upload, 200);
+      return c.json({
+        upload,
+      }, 200);
 
     } catch (error: any) {
       console.error('Error uploading JSON to Pinata:', error);

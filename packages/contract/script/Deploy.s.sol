@@ -31,6 +31,7 @@ contract DeployScript is Script {
         brandNFT.transferOwnership(brandDealAddress);
         campaignContract.transferOwnership(brandDealAddress);
         creatorNFT.transferOwnership(brandDealAddress);
+
         
         vm.stopBroadcast();
     }

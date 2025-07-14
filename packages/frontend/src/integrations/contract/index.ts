@@ -1,0 +1,5 @@
+export const brandAddress = '0x'
+export const brandDealAddress = '0x'
+export const campaignAddress = '0x'
+export const creatorAddress = '0x'
+export const usdcAddress = '0x'

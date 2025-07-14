@@ -1,11 +1,18 @@
 import { createFileRoute } from '@tanstack/react-router'
 import logo from '../logo.svg'
+import { useGetBrands } from '@/hooks/use-get-brand'
+import { useGetCampaigns } from '@/hooks/use-get-campaign'
+import { useGetCreators } from '@/hooks/use-get-creator'
 
 export const Route = createFileRoute('/')({
   component: App,
 })
 
 function App() {
+  const queryBrands = useGetBrands()
+  const queryCreators = useGetCreators()
+  const queryCampaigns = useGetCampaigns()
+
   return (
     <div className="text-center">
       <header className="min-h-screen flex flex-col items-center justify-center bg-[#282c34] text-white text-[calc(10px+2vmin)]">
