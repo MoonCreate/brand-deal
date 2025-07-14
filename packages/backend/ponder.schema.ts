@@ -67,7 +67,7 @@ export const brandRelations = relations(brand, ({ many }) => ({
 }));
 
 //creator has many campaigns
-export const creatorRelations = relations(creator, ({ many }) => ({
+export const creatorRelations = relations(creator, ({ many, one }) => ({
   creatorCampaigns: many(campaign),
 }));
 
@@ -88,22 +88,9 @@ export const creatorPoolRelations = relations(creatorPool, ({ one }) => ({
   campaign: one(campaign, {
     fields: [creatorPool.campaignNFTId],
     references: [campaign.campaignNFTId]
-  }) 
+  }),
+  creator: one(creator, {
+    fields: [creatorPool.creatorWalletAddress],
+    references: [creator.creatorWalletAddress]
+  })
 }));
-
-// // NFT belongs to one Brand & has many Transfers
-// export const nftRelations = relations(nft, ({ one, many }) => ({
-//   brand: one(brand, {
-//     fields: [nft.NftContractAddress],
-//     references: [brand.NftContractAddress],
-//   }),
-//   transfers: many(nftTransfer),
-// }));
-
-// // NFTTransfer belongs to one NFT
-// export const nftTransferRelations = relations(nftTransfer, ({ one }) => ({
-//   nft: one(nft, {
-//     fields: [nftTransfer.tokenId, nftTransfer.NftContractAddress],
-//     references: [nft.tokenId, nft.NftContractAddress],
-//   }),
-// }));
