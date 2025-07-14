@@ -7,36 +7,59 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract CreatorNFT is ERC721URIStorage, Ownable {
     uint256 private _newTokenId;
 
-    event CreatorNFTMinted(uint256 indexed tokenId, address indexed owner, string metadataURI);
+    struct Creator {
+        uint256 id;
+        address creator;
+        string name;
+        string uri;
+    }
+
+    mapping(uint256 => Creator) public existingCreator;
+    mapping(string => bool) public isCreatorNameExist;
+
+    event CreatorNFTMinted(
+        uint256 indexed tokenId,
+        address indexed owner,
+        string indexed name,
+        string metadataURI
+    );
 
     constructor()
         ERC721("Creator Profile NFT", "CREATOR")
         Ownable(msg.sender)
     {}
 
-    /**
-     * @dev Mint Creator NFT. Hanya dapat dipanggil oleh owner (PlatformCore).
-     * @param to Alamat yang akan menerima NFT.
-     * @param _metadataURI URI metadata untuk NFT ini.
-     */
-    function mintCreatorNFT(address to, string calldata _metadataURI)
-        external
-        onlyOwner // PlatformCore akan menjadi owner dari kontrak ini setelah deploy
-        returns (uint256)
-    {
-        require(to != address(0), "ERC721: mint to the zero address");
-        require(bytes(_metadataURI).length > 0, "Metadata URI cannot be empty");
+    function mintCreatorNFT(
+        address to,
+        string calldata _name,
+        string calldata _metadataURI
+    ) external returns (uint256) {
+        if (to == address(0)) {
+            revert("ERC721: mint to the zero address");
+        }
+        if (bytes(_metadataURI).length == 0) {
+            revert("Metadata URI cannot be empty");
+        }
+        if (isCreatorNameExist[_name] == true) {
+            revert("Name for creator already exist");
+        }
 
         _newTokenId++;
-        uint256 newItemId = _newTokenId;
-        _mint(to, newItemId);
-        _setTokenURI(newItemId, _metadataURI); // Menyimpan URI metadata spesifik untuk NFT ini
 
-        emit CreatorNFTMinted(newItemId, to, _metadataURI);
-        return newItemId;
-    }
-    
-    function setTokenURI(uint256 _tokenId, string calldata _uri) external onlyOwner {
-        _setTokenURI(_tokenId, _uri);
+        Creator memory creator = Creator({
+            id: _newTokenId,
+            creator: to,
+            name: _name,
+            uri: _metadataURI
+        });
+
+        existingCreator[_newTokenId] = creator;
+        isCreatorNameExist[_name] = true;
+
+        _mint(to, _newTokenId);
+        _setTokenURI(_newTokenId, _metadataURI);
+
+        emit CreatorNFTMinted(_newTokenId, to, _name, _metadataURI);
+        return _newTokenId;
     }
 }

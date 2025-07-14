@@ -3,15 +3,17 @@ pragma solidity ^0.8.20;
 
 import {Script, console} from "forge-std/Script.sol";
 import {BrandNFT} from "../src/BrandNFT.sol";
-import {CampaignNFT} from "../src/CampaignNFT.sol";
+import {CampaignContract} from "../src/CampaignContract.sol";
 import {CreatorNFT} from "../src/CreatorNFT.sol";
-import {PlatformCore} from "../src/PlatformCore.sol";
+import {BrandDeal} from "../src/BrandDeal.sol";
+import {MockUSDC} from "../src/MockUSDC.sol";
 
 contract DeployScript is Script {
     BrandNFT public brandNFT;
-    CampaignNFT public campaignNFT;
+    CampaignContract public campaignContract;
     CreatorNFT public creatorNFT;
-    PlatformCore public platformCore;
+    BrandDeal public brandDeal;
+    MockUSDC public mockUSDC;
 
     function setUp() public {}
 
@@ -19,15 +21,16 @@ contract DeployScript is Script {
         uint256 deployer = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(deployer);
 
+        mockUSDC = new MockUSDC();
         brandNFT = new BrandNFT();
-        campaignNFT = new CampaignNFT("test");
+        campaignContract = new CampaignContract("test", address(mockUSDC));
         creatorNFT = new CreatorNFT();
-        platformCore = new PlatformCore(address(brandNFT), address(creatorNFT), address(campaignNFT));
+        brandDeal = new BrandDeal(address(brandNFT), address(creatorNFT), address(campaignContract));
 
-        address platformCoreAddress = address(platformCore);
-        brandNFT.transferOwnership(platformCoreAddress);
-        campaignNFT.transferOwnership(platformCoreAddress);
-        creatorNFT.transferOwnership(platformCoreAddress);
+        address brandDealAddress = address(brandDeal);
+        brandNFT.transferOwnership(brandDealAddress);
+        campaignContract.transferOwnership(brandDealAddress);
+        creatorNFT.transferOwnership(brandDealAddress);
         
         vm.stopBroadcast();
     }

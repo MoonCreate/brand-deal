@@ -7,35 +7,64 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract BrandNFT is ERC721URIStorage, Ownable {
     uint256 private _newTokenId;
 
-    event BrandNFTMinted(uint256 indexed tokenId, address indexed owner, string metadataURI);
-
-    constructor()
-        ERC721("Brand Profile NFT", "BRAND")
-        Ownable(msg.sender)
-    {}
-
-    /**
-     * @dev Mint Brand NFT. Hanya dapat dipanggil oleh owner (PlatformCore).
-     * @param to Alamat yang akan menerima NFT.
-     * @param _metadataURI URI metadata untuk NFT ini.
-     */
-    function mintBrandNFT(address to, string calldata _metadataURI)
-        external
-        onlyOwner // PlatformCore akan menjadi owner dari kontrak ini setelah deploy
-        returns (uint256)
-    {
-        require(to != address(0), "ERC721: mint to the zero address");
-        require(bytes(_metadataURI).length > 0, "Metadata URI cannot be empty");
-
-        _newTokenId++;
-        _mint(to, _newTokenId);
-        _setTokenURI(_newTokenId, _metadataURI); // Menyimpan URI metadata spesifik untuk NFT ini
-
-        emit BrandNFTMinted(_newTokenId, to, _metadataURI);
-        return _newTokenId;
+    struct Brand {
+        uint256 id;
+        address brandOwner;
+        string instanceName;
+        string uri;
+        uint256 NIB;
     }
 
-    function setTokenURI(uint256 _tokenId, string calldata _uri) external onlyOwner {
-        _setTokenURI(_tokenId, _uri);
+    mapping(uint256 => Brand) public existingBrand;
+    mapping(string => bool) public isBrandNameExist;
+    mapping(uint256 => bool) public isNIBExist;
+
+    event BrandNFTMinted(
+        uint256 indexed tokenId,
+        address indexed owner,
+        string indexed instanceName,
+        string metadataURI
+    );
+
+    constructor() ERC721("Brand Profile NFT", "BRAND") Ownable(msg.sender) {}
+
+    function mintBrandNFT(
+        address to,
+        string calldata _instanceName,
+        string calldata _metadataURI,
+        uint256 _NIB
+    ) external returns (uint256) {
+        if (to == address(0)) {
+            revert("ERC721: mint to the zero address");
+        }
+        if (bytes(_metadataURI).length == 0) {
+            revert("Metadata URI cannot be empty");
+        }
+        if (isBrandNameExist[_instanceName] == true) {
+            revert("Brand Name already exist");
+        }
+        if (isNIBExist[_NIB] == true) {
+            revert("Brand Name already exist");
+        }
+
+        _newTokenId++;
+
+        Brand memory brand = Brand({
+            id: _newTokenId,
+            brandOwner: to,
+            instanceName: _instanceName,
+            uri: _metadataURI,
+            NIB: _NIB
+        });
+
+        existingBrand[_newTokenId] = brand;
+        isBrandNameExist[_instanceName] = true;
+        isNIBExist[_NIB] = true;
+
+        _mint(to, _newTokenId);
+        _setTokenURI(_newTokenId, _metadataURI);
+
+        emit BrandNFTMinted(_newTokenId, to, _instanceName, _metadataURI);
+        return _newTokenId;
     }
 }
