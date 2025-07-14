@@ -25,35 +25,6 @@ contract CampaignContract is ERC1155URIStorage, Ownable {
     mapping(uint256 => Campaign) public campaigns;
     mapping(uint256 => mapping(address => bool)) public creatorPool;
 
-    event CampaignMinted(
-        uint256 indexed campaignNFTId, 
-        address indexed ownerCampaign, 
-        string indexed campaignName, 
-        address approvedCreator, 
-        uint256 stakedAmount, 
-        uint256 campaignDeadline,
-        string campaignMetadataURI
-    );
-    event CreatorAssignedToCampaign(uint256 indexed campaignId, address indexed owner, address indexed creatorAddress);
-    event ResolveCampaign(uint256 indexed campaignId, address indexed creatorAddress, uint256 indexed rewards);
-    event CreatorAssigned(
-        uint256 indexed campaignId,
-        address indexed creatorAddress,
-        uint256 campaignDeadline
-    );
-    event CampaignApproved(
-        uint256 indexed campaignId,
-        address indexed approver,
-        uint256 indexed rewards
-    );
-    event CreatorApply(uint256 indexed campaignId, address indexed creator);
-    event SubmitTaskCreator(
-        uint256 indexed campaignId,
-        address indexed creatorAddress,
-        string indexed submitMetadataUri
-    );
-    event CreatorCancelledApplyForCampaign(uint256 indexed campaignId, address indexed creator);
-
     constructor(string memory _uri, address _USDC)
         ERC1155(_uri)
         Ownable(msg.sender)
@@ -91,8 +62,6 @@ contract CampaignContract is ERC1155URIStorage, Ownable {
         USDC.transferFrom(from, address(this), _rewards);
 
         campaigns[_newTokenId] = campaign;
-        emit CampaignMinted(_newTokenId, from, _campaignName, address(0), _rewards, block.timestamp + _deadline, metadataUri);
-
         return _newTokenId;
     }
 
@@ -105,8 +74,6 @@ contract CampaignContract is ERC1155URIStorage, Ownable {
         _burn(campaign.approvedCreator, _campaignId, 1);
         _burn(campaign.ownerCampaign, _campaignId, 1);
 
-        emit ResolveCampaign(_campaignId, campaign.approvedCreator, amountCreator);
-
         delete campaigns[_campaignId];
     }
 
@@ -117,21 +84,16 @@ contract CampaignContract is ERC1155URIStorage, Ownable {
 
         creatorPool[_campaignId][_creator] = true;
 
-        emit CreatorApply(_campaignId, _creator);
     }
 
     function submitTaskCampaignCreator(uint256 _campaignId, string memory _submitMetadataUri) public {
         Campaign storage campaign = campaigns[_campaignId];
 
         campaign.submitMetadataUri = _submitMetadataUri;
-
-        emit SubmitTaskCreator(_campaignId, campaign.approvedCreator, _submitMetadataUri);
     }
 
     function cancelApply(uint256 _campaignId, address _creator) public {
         creatorPool[_campaignId][_creator] = false;
-
-        emit CreatorCancelledApplyForCampaign(_campaignId, _creator);
     }
    
     function assignCreatorToCampaign(uint256 _campaignId, address _creatorAddress) public {
@@ -146,8 +108,5 @@ contract CampaignContract is ERC1155URIStorage, Ownable {
  
         _mint(_creatorAddress, _campaignId, 1, "");
 
-        emit CreatorAssignedToCampaign(_campaignId, campaign.ownerCampaign, _creatorAddress);
-        emit CreatorAssigned( _campaignId, _creatorAddress, campaign.campaignDeadline);
-        emit CampaignApproved(_campaignId, campaign.ownerCampaign, campaign.rewards);
     }
 }
