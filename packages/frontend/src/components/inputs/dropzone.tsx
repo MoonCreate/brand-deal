@@ -15,10 +15,6 @@ export function DropZone(props: {
   const rect = useRef<DOMRect>(null)
   const isOnDrag = useDebounce(_isOnDrag, { delay: 50 })
 
-
-  useEffect(() => {
-    console.log(isOnDrag)
-  }, [isOnDrag])
   // eslint-disable-next-line no-shadow
   const handleOnDrop: typeof props.onDrop = (files) => {
     if (files && files.length > 1) {

@@ -24,7 +24,9 @@ export function Navbar() {
   return (
     <nav className="flex gap-5 items-center">
       {lists.map((item) => {
-        const isOnThisRoute = router.location.pathname == item.to
+        const pathname = router.location.pathname
+        let isOnThisRoute = item.to == pathname;
+        if (item.to.length > 1) isOnThisRoute = pathname.startsWith(item.to);
         return isOnThisRoute ? (
           <motion.div key={item.to} layoutId="nav-active" layout>
             <Link to={item.to} children={item.label} className={defaultStyle} />

@@ -7,7 +7,7 @@ export function useGetProfile() {
     queryKey: ['profile', account.address, account.chain?.name],
     queryFn: () => {
       if (!account.chain) return null 
-      return null
+      return null 
     },
     enabled: Boolean(account.address) && Boolean(account.chain),
   })

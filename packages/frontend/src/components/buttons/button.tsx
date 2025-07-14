@@ -2,11 +2,14 @@ import { LucideLoader2 } from 'lucide-react'
 import { SplitPopAnimation } from '../text/split-pop-animation'
 import { cn } from '@/lib/utils'
 
-export function getButtonStyle() {
+type Variant = 'default' | 'outline'
+export function getButtonStyle(variant: Variant = 'default') {
   return cn(
     'bg-primary px-2 py-1 rounded-md shadow-box text-white font-bold font-roboto',
     'flex items-center gap-2 hover:bg-primary/70 active:scale-95 transition-transform ease-out',
     'disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100',
+    'hover:cursor-pointer',
+    variant === "outline" && "bg-transparent border text-black hover:bg-black/5 font-normal"
   )
 }
 
@@ -15,14 +18,16 @@ export function Button({
   children,
   isLoading,
   disabled,
+  variant,
   ...props
 }: React.ComponentProps<'button'> & {
-  isLoading?: boolean
+  isLoading?: boolean,
+  variant?: Variant
 }) {
   return (
     <button
       disabled={disabled || isLoading}
-      className={cn(getButtonStyle(), className)}
+      className={cn(getButtonStyle(variant), className)}
       {...props}
     >
       {isLoading ? (

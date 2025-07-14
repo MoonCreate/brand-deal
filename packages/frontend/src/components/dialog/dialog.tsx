@@ -1,36 +1,55 @@
 import { createPortal } from 'react-dom'
-import { useEffect } from 'react'
+import { useEffect, useLayoutEffect } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { dialogInjection } from '@/injection/dialog-injection'
 import { cn } from '@/lib/utils'
 
+const ignoresDiv = [
+  '[data-radix-popper-content-wrapper]',
+  '#my-our-dialog-content',
+]
+
 export function DialogProvider(props: { children: React.ReactNode }) {
   const provider = dialogInjection.init()
 
+  useLayoutEffect(() => {
+    let previousSelector: Array<NodeListOf<Element>> = []
+    const clickListener = (ev: PointerEvent) => {
+      let isClickDialog = false
+      parentLoop: for (const prev of previousSelector) {
+        for (const el of prev) {
+          isClickDialog = el.contains(ev.target as Node)
+          if (isClickDialog) break parentLoop
+        }
+      }
+      previousSelector = ignoresDiv.map((ign) => document.querySelectorAll(ign))
+      if (
+        !isClickDialog &&
+        !provider.firstOpen.current &&
+        ev.target !== document.documentElement
+      ) {
+        provider.close()
+      }
+      if (provider.firstOpen.current) provider.firstOpen.current = false
+    }
+    if (provider.isOpen) window.addEventListener('click', clickListener)
+
+    return () => {
+      window.removeEventListener('click', clickListener)
+    }
+  }, [provider.isOpen])
+
   useEffect(() => {
     const app = document.getElementById('app') as HTMLDivElement
-    let firstClick = true
-    const clickListener = (ev: PointerEvent) => {
-      const isClickDialog = document
-        .getElementById('my-our-dialog-content')
-        ?.contains(ev.target as Node)
-      if (!isClickDialog && !firstClick) provider.close()
-      if (firstClick) firstClick = false
-    }
 
     if (provider.isOpen) {
       app.style.overflow = 'hidden'
       app.style.pointerEvents = 'none'
       document.body.style.overflow = 'hidden'
-      window.addEventListener('click', clickListener)
     } else {
       app.style.pointerEvents = 'unset'
       app.style.overflow = 'unset'
       document.body.style.overflow = 'unset'
-    }
-
-    return () => {
-      window.removeEventListener('click', clickListener)
     }
   }, [provider.isOpen])
 
@@ -52,7 +71,7 @@ function Dialog() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="bg-black/50 fixed inset-0 z-10 m-auto backdrop-blur-xs flex justify-center items-center"
+          className="bg-black/50 fixed inset-0 z-10 m-auto backdrop-blur-xs flex justify-center items-center overflow-auto h-screen"
         >
           <motion.div
             id="my-our-dialog-content"

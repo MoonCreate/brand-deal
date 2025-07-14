@@ -11,8 +11,8 @@
   ],
   "devDependencies": {
     "@types/bun": "latest",
-    "~frontend": "workspace:*",
-    "~backend": "workspace:*"
+    "~backend": "workspace:*",
+    "~frontend": "workspace:*"
   },
   "peerDependencies": {
     "typescript": "^5"

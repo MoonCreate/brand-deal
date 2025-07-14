@@ -10,17 +10,13 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as CampaignRouteImport } from './routes/campaign'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CampaignIndexRouteImport } from './routes/campaign/index'
+import { Route as CampaignCreateRouteImport } from './routes/campaign/create'
 
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CampaignRoute = CampaignRouteImport.update({
-  id: '/campaign',
-  path: '/campaign',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -28,35 +24,49 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CampaignIndexRoute = CampaignIndexRouteImport.update({
+  id: '/campaign/',
+  path: '/campaign/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CampaignCreateRoute = CampaignCreateRouteImport.update({
+  id: '/campaign/create',
+  path: '/campaign/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/campaign': typeof CampaignRoute
   '/dashboard': typeof DashboardRoute
+  '/campaign/create': typeof CampaignCreateRoute
+  '/campaign': typeof CampaignIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/campaign': typeof CampaignRoute
   '/dashboard': typeof DashboardRoute
+  '/campaign/create': typeof CampaignCreateRoute
+  '/campaign': typeof CampaignIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/campaign': typeof CampaignRoute
   '/dashboard': typeof DashboardRoute
+  '/campaign/create': typeof CampaignCreateRoute
+  '/campaign/': typeof CampaignIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/campaign' | '/dashboard'
+  fullPaths: '/' | '/dashboard' | '/campaign/create' | '/campaign'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/campaign' | '/dashboard'
-  id: '__root__' | '/' | '/campaign' | '/dashboard'
+  to: '/' | '/dashboard' | '/campaign/create' | '/campaign'
+  id: '__root__' | '/' | '/dashboard' | '/campaign/create' | '/campaign/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CampaignRoute: typeof CampaignRoute
   DashboardRoute: typeof DashboardRoute
+  CampaignCreateRoute: typeof CampaignCreateRoute
+  CampaignIndexRoute: typeof CampaignIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -68,13 +78,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/campaign': {
-      id: '/campaign'
-      path: '/campaign'
-      fullPath: '/campaign'
-      preLoaderRoute: typeof CampaignRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -82,13 +85,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/campaign/': {
+      id: '/campaign/'
+      path: '/campaign'
+      fullPath: '/campaign'
+      preLoaderRoute: typeof CampaignIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/campaign/create': {
+      id: '/campaign/create'
+      path: '/campaign/create'
+      fullPath: '/campaign/create'
+      preLoaderRoute: typeof CampaignCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CampaignRoute: CampaignRoute,
   DashboardRoute: DashboardRoute,
+  CampaignCreateRoute: CampaignCreateRoute,
+  CampaignIndexRoute: CampaignIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
