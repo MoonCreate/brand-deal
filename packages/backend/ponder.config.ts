@@ -2,7 +2,7 @@ import { createConfig } from "ponder";
 import { CreatorABI } from "./abis/CreatorABI";
 import { CampaignABI } from "./abis/CampaignABI";
 import { BrandABI } from "./abis/BrandABI";
-import { PlatformCoreABI } from "./abis/PlatformCoreABI";
+import { BrandDealABI } from "./abis/BrandDealABI";
 export default createConfig({
   chains: {
     anvil: {
@@ -34,12 +34,19 @@ export default createConfig({
       // endBlock: 24459809,
       address: process.env.CAMPAIGN_ADDRESS as `0x${string}`
     },
-    PlatformCore: {
+    BrandDeal: {
       chain: "anvil",
-      abi: PlatformCoreABI,
+      abi: BrandDealABI,
       startBlock: 1,
       // endBlock: 24459809,
-      address: process.env.PLATFORM_CORE_ADDRESS as `0x${string}`
+      address: process.env.BRAND_DEAL_ADDRESS as `0x${string}`
+    },
+  },
+  blocks: {
+    ChainlinkOracleUpdate: {
+      chain: "anvil",
+      interval: 10, // Every 10 blocks
+      startBlock: 1000,
     },
   },
 });

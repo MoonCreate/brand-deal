@@ -43,6 +43,40 @@ export const CreatorABI = [
   },
   {
     "type": "function",
+    "name": "existingCreator",
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "id",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "creator",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "internalType": "string"
+      },
+      {
+        "name": "uri",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "getApproved",
     "inputs": [
       {
@@ -86,12 +120,36 @@ export const CreatorABI = [
   },
   {
     "type": "function",
+    "name": "isCreatorNameExist",
+    "inputs": [
+      {
+        "name": "",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "mintCreatorNFT",
     "inputs": [
       {
         "name": "to",
         "type": "address",
         "internalType": "address"
+      },
+      {
+        "name": "_name",
+        "type": "string",
+        "internalType": "string"
       },
       {
         "name": "_metadataURI",
@@ -224,24 +282,6 @@ export const CreatorABI = [
         "name": "approved",
         "type": "bool",
         "internalType": "bool"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setTokenURI",
-    "inputs": [
-      {
-        "name": "_tokenId",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "_uri",
-        "type": "string",
-        "internalType": "string"
       }
     ],
     "outputs": [],
@@ -418,6 +458,12 @@ export const CreatorABI = [
         "type": "address",
         "indexed": true,
         "internalType": "address"
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "indexed": true,
+        "internalType": "string"
       },
       {
         "name": "metadataURI",

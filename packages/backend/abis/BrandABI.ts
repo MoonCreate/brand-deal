@@ -43,6 +43,45 @@ export const BrandABI = [
   },
   {
     "type": "function",
+    "name": "existingBrand",
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "id",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "brandOwner",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "instanceName",
+        "type": "string",
+        "internalType": "string"
+      },
+      {
+        "name": "uri",
+        "type": "string",
+        "internalType": "string"
+      },
+      {
+        "name": "NIB",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "getApproved",
     "inputs": [
       {
@@ -86,6 +125,44 @@ export const BrandABI = [
   },
   {
     "type": "function",
+    "name": "isBrandNameExist",
+    "inputs": [
+      {
+        "name": "",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "isNIBExist",
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "mintBrandNFT",
     "inputs": [
       {
@@ -94,9 +171,19 @@ export const BrandABI = [
         "internalType": "address"
       },
       {
+        "name": "_instanceName",
+        "type": "string",
+        "internalType": "string"
+      },
+      {
         "name": "_metadataURI",
         "type": "string",
         "internalType": "string"
+      },
+      {
+        "name": "_NIB",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ],
     "outputs": [
@@ -224,24 +311,6 @@ export const BrandABI = [
         "name": "approved",
         "type": "bool",
         "internalType": "bool"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setTokenURI",
-    "inputs": [
-      {
-        "name": "_tokenId",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "_uri",
-        "type": "string",
-        "internalType": "string"
       }
     ],
     "outputs": [],
@@ -418,6 +487,12 @@ export const BrandABI = [
         "type": "address",
         "indexed": true,
         "internalType": "address"
+      },
+      {
+        "name": "instanceName",
+        "type": "string",
+        "indexed": true,
+        "internalType": "string"
       },
       {
         "name": "metadataURI",

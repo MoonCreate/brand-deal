@@ -1,57 +1,23 @@
-export const PlatformCoreABI = [
+export const BrandDealABI = [
   {
     "type": "constructor",
     "inputs": [
       {
-        "name": "_brandNFTAddress",
+        "name": "_brandNFT",
         "type": "address",
         "internalType": "address"
       },
       {
-        "name": "_creatorNFTAddress",
+        "name": "_creatorNFT",
         "type": "address",
         "internalType": "address"
       },
       {
-        "name": "_campaignNFTAddress",
+        "name": "_campaignContract",
         "type": "address",
         "internalType": "address"
       }
     ],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "fallback",
-    "stateMutability": "payable"
-  },
-  {
-    "type": "receive",
-    "stateMutability": "payable"
-  },
-  {
-    "type": "function",
-    "name": "PLATFORM_COMMISSION_PERCENT",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "approveCampaign",
-    "inputs": [
-      {
-        "name": "_campaignNFTId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "outputs": [],
     "stateMutability": "nonpayable"
   },
   {
@@ -59,7 +25,7 @@ export const PlatformCoreABI = [
     "name": "assignCreatorToCampaign",
     "inputs": [
       {
-        "name": "_campaignNFTId",
+        "name": "_campaignId",
         "type": "uint256",
         "internalType": "uint256"
       },
@@ -67,11 +33,6 @@ export const PlatformCoreABI = [
         "name": "_creatorAddress",
         "type": "address",
         "internalType": "address"
-      },
-      {
-        "name": "_deadlineInDays",
-        "type": "uint256",
-        "internalType": "uint256"
       }
     ],
     "outputs": [],
@@ -92,104 +53,64 @@ export const PlatformCoreABI = [
   },
   {
     "type": "function",
-    "name": "campaignNFT",
+    "name": "campaignContract",
     "inputs": [],
     "outputs": [
       {
         "name": "",
         "type": "address",
-        "internalType": "contract CampaignNFT"
+        "internalType": "contract CampaignContract"
       }
     ],
     "stateMutability": "view"
   },
   {
     "type": "function",
-    "name": "campaignNFTIdToInstanceId",
+    "name": "cancelApply",
     "inputs": [
       {
-        "name": "",
+        "name": "_campaignId",
         "type": "uint256",
         "internalType": "uint256"
       }
     ],
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "campaigns",
-    "inputs": [
-      {
-        "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "outputs": [
-      {
-        "name": "brandAddress",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "stakedAmount",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "creatorAddress",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "campaignDeadline",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "isApproved",
-        "type": "bool",
-        "internalType": "bool"
-      },
-      {
-        "name": "isCompletedAndPaid",
-        "type": "bool",
-        "internalType": "bool"
-      },
-      {
-        "name": "campaignNFTId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "stateMutability": "view"
+    "outputs": [],
+    "stateMutability": "nonpayable"
   },
   {
     "type": "function",
     "name": "createCampaign",
     "inputs": [
       {
-        "name": "_campaignMetadataURI",
+        "name": "_campaignName",
+        "type": "string",
+        "internalType": "string"
+      },
+      {
+        "name": "_rewards",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_deadline",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_metadataURI",
         "type": "string",
         "internalType": "string"
       }
     ],
     "outputs": [],
-    "stateMutability": "payable"
+    "stateMutability": "nonpayable"
   },
   {
     "type": "function",
     "name": "creatorApplyToCampaign",
     "inputs": [
       {
-        "name": "campaignInstanceId",
+        "name": "_campaignId",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -236,59 +157,7 @@ export const PlatformCoreABI = [
   },
   {
     "type": "function",
-    "name": "creatorWithdrawFromCampaign",
-    "inputs": [
-      {
-        "name": "campaignInstanceId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "handleCancelCampaign",
-    "inputs": [
-      {
-        "name": "_campaignNFTId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "handleDeadlineExceeded",
-    "inputs": [
-      {
-        "name": "_campaignNFTId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
     "name": "owner",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "platformWallet",
     "inputs": [],
     "outputs": [
       {
@@ -304,7 +173,7 @@ export const PlatformCoreABI = [
     "name": "registerBrand",
     "inputs": [
       {
-        "name": "_name",
+        "name": "_instanceName",
         "type": "string",
         "internalType": "string"
       },
@@ -312,6 +181,11 @@ export const PlatformCoreABI = [
         "name": "_metadataURI",
         "type": "string",
         "internalType": "string"
+      },
+      {
+        "name": "_NIB",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ],
     "outputs": [],
@@ -344,12 +218,30 @@ export const PlatformCoreABI = [
   },
   {
     "type": "function",
-    "name": "submitTaskForReview",
+    "name": "resolveCampaign",
     "inputs": [
       {
-        "name": "_campaignNFTId",
+        "name": "_campaignId",
         "type": "uint256",
         "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "submitTaskCampaignCreator",
+    "inputs": [
+      {
+        "name": "_campaignId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_submitMetadataUri",
+        "type": "string",
+        "internalType": "string"
       }
     ],
     "outputs": [],
@@ -387,7 +279,7 @@ export const PlatformCoreABI = [
       {
         "name": "name",
         "type": "string",
-        "indexed": false,
+        "indexed": true,
         "internalType": "string"
       },
       {
@@ -395,6 +287,12 @@ export const PlatformCoreABI = [
         "type": "string",
         "indexed": false,
         "internalType": "string"
+      },
+      {
+        "name": "NIB",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
       }
     ],
     "anonymous": false
@@ -404,7 +302,7 @@ export const PlatformCoreABI = [
     "name": "CampaignApproved",
     "inputs": [
       {
-        "name": "campaignInstanceId",
+        "name": "campaignId",
         "type": "uint256",
         "indexed": true,
         "internalType": "uint256"
@@ -414,12 +312,6 @@ export const PlatformCoreABI = [
         "type": "address",
         "indexed": true,
         "internalType": "address"
-      },
-      {
-        "name": "amountTransferred",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
       }
     ],
     "anonymous": false
@@ -429,21 +321,27 @@ export const PlatformCoreABI = [
     "name": "CampaignCreated",
     "inputs": [
       {
-        "name": "campaignInstanceId",
-        "type": "uint256",
-        "indexed": true,
-        "internalType": "uint256"
-      },
-      {
         "name": "campaignNFTId",
         "type": "uint256",
         "indexed": true,
         "internalType": "uint256"
       },
       {
-        "name": "brandAddress",
+        "name": "ownerCampaign",
         "type": "address",
         "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "campaignName",
+        "type": "string",
+        "indexed": true,
+        "internalType": "string"
+      },
+      {
+        "name": "approvedCreator",
+        "type": "address",
+        "indexed": false,
         "internalType": "address"
       },
       {
@@ -469,29 +367,10 @@ export const PlatformCoreABI = [
   },
   {
     "type": "event",
-    "name": "CampaignDisputeOrTimeout",
-    "inputs": [
-      {
-        "name": "campaignInstanceId",
-        "type": "uint256",
-        "indexed": true,
-        "internalType": "uint256"
-      },
-      {
-        "name": "reason",
-        "type": "string",
-        "indexed": false,
-        "internalType": "string"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
     "name": "CreatorApply",
     "inputs": [
       {
-        "name": "campaignInstanceId",
+        "name": "campaignId",
         "type": "uint256",
         "indexed": true,
         "internalType": "uint256"
@@ -510,7 +389,7 @@ export const PlatformCoreABI = [
     "name": "CreatorAssigned",
     "inputs": [
       {
-        "name": "campaignInstanceId",
+        "name": "campaignId",
         "type": "uint256",
         "indexed": true,
         "internalType": "uint256"
@@ -520,12 +399,25 @@ export const PlatformCoreABI = [
         "type": "address",
         "indexed": true,
         "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "CreatorCancelledApplyForCampaign",
+    "inputs": [
+      {
+        "name": "campaignId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
       },
       {
-        "name": "deadline",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
+        "name": "creator",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
       }
     ],
     "anonymous": false
@@ -549,7 +441,7 @@ export const PlatformCoreABI = [
       {
         "name": "name",
         "type": "string",
-        "indexed": false,
+        "indexed": true,
         "internalType": "string"
       },
       {
@@ -557,25 +449,6 @@ export const PlatformCoreABI = [
         "type": "string",
         "indexed": false,
         "internalType": "string"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "CreatorWithdraw",
-    "inputs": [
-      {
-        "name": "campaignInstanceId",
-        "type": "uint256",
-        "indexed": true,
-        "internalType": "uint256"
-      },
-      {
-        "name": "creatorAddress",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
       }
     ],
     "anonymous": false
@@ -601,19 +474,50 @@ export const PlatformCoreABI = [
   },
   {
     "type": "event",
-    "name": "PlatformCommissionPaid",
+    "name": "ResolveCampaign",
     "inputs": [
       {
-        "name": "campaignInstanceId",
+        "name": "campaignId",
         "type": "uint256",
         "indexed": true,
         "internalType": "uint256"
       },
       {
-        "name": "commissionAmount",
+        "name": "ownerCampaign",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "creatorAddress",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "SubmitTaskCreator",
+    "inputs": [
+      {
+        "name": "campaignId",
         "type": "uint256",
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256"
+      },
+      {
+        "name": "creatorAddress",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "submitMetadataUri",
+        "type": "string",
+        "indexed": true,
+        "internalType": "string"
       }
     ],
     "anonymous": false
@@ -623,7 +527,7 @@ export const PlatformCoreABI = [
     "name": "TaskSubmittedForReview",
     "inputs": [
       {
-        "name": "campaignInstanceId",
+        "name": "campaignId",
         "type": "uint256",
         "indexed": true,
         "internalType": "uint256"
