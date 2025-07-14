@@ -1,16 +1,31 @@
 {
   "name": "~backend",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "bun run --watch src/index.ts",
-    "start": "vercel dev",
-    "deploy": "vercel"
+    "dev": "ponder dev",
+    "start": "ponder start",
+    "db": "ponder db",
+    "codegen": "ponder codegen",
+    "lint": "eslint .",
+    "typecheck": "tsc"
   },
   "dependencies": {
     "@hono/zod-validator": "^0.7.0",
+    "@pinata/sdk": "^2.1.0",
+    "dotenv": "^17.1.0",
     "hono": "^4.8.4",
+    "pinata": "^2.4.9",
+    "ponder": "^0.11.23",
+    "viem": "^2.21.3",
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@types/node": "^20.9.0",
+    "eslint": "^8.53.0",
+    "eslint-config-ponder": "^0.11.23",
+    "typescript": "^5.2.2",
     "vercel": "^32.4.1"
   }
 }
