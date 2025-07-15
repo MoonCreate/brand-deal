@@ -77,14 +77,14 @@ export type Campaign = {
     ]
   }
   status:
-    | 'Pending'
-    | 'OpenForApplication'
-    | 'Assigned'
-    | 'UnderReview'
-    | 'Approved'
-    | 'Disputed'
-    | 'TimedOut'
-    | 'CompletedAndPaid'
+  | 'Pending'
+  | 'OpenForApplication'
+  | 'Assigned'
+  | 'UnderReview'
+  | 'Approved'
+  | 'Disputed'
+  | 'TimedOut'
+  | 'CompletedAndPaid'
   blockNumber: NumStr
   blockTimestamp: NumStr
   transactionHash: Address
@@ -117,3 +117,17 @@ export type Brand = {
 export type GraphqlResponse<T> = {
   data: T
 }
+
+export type Selective<T> = T extends object
+  ? {
+    [K in keyof T]?: K extends 'where' ? T[K] : Selective<T[K]>
+  } & ('where' extends keyof T
+    ? T['where'] extends NonNullable<T['where']>
+    ? {
+      // @ts-ignore: always with where
+      select: T['Select']
+      where: T['where']
+    }
+    : {}
+    : {})
+  : T

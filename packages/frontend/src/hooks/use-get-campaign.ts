@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import type { Campaign, GraphqlResponse } from '@/types'
-import { graphql } from '@/integrations/hono-graphql'
+import { graphql, useMobiusQuery } from '@/integrations/hono-graphql'
 
 export function useGetCampaigns() {
   return useQuery({
@@ -28,6 +28,15 @@ export function useGetCampaigns() {
         }
       `)
       return result
+    },
+  })
+}
+
+export function useGetBrandByAddress(address: `0x${string}`) {
+  const { data } = useMobiusQuery({
+    brand: {
+      where: { brandWalletAddress: address },
+      select: { metadata: true, blockNumber: true, blockTimestamp: true },
     },
   })
 }
