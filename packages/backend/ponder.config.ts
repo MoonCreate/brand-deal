@@ -6,46 +6,46 @@ import { BrandDealABI } from "./abis/BrandDealABI";
 
 export default createConfig({
   chains: {
-    anvil: {
-      id: 31337,
-      rpc: "http://127.0.0.1:8545/",
+    liskTestnet: {
+      id: 4202,
+      rpc: "https://rpc.sepolia-api.lisk.com",
       disableCache: false,
     },
   },
 
   contracts: {
     Brand: {
-      chain: "anvil",
+      chain: "liskTestnet",
       abi: BrandABI,
       address: process.env.BRAND_ADDRESS as `0x${string}`,
-      startBlock: 1,
+      startBlock: 23681094,
       // endBlock: 24459809,
     },
     Creator: {
-      chain: "anvil",
+      chain: "liskTestnet",
       abi: CreatorABI,
       address: process.env.CREATOR_ADDRESS as `0x${string}`,
-      startBlock: 1,
+      startBlock: 23681094,
       // endBlock: 24459809,
     },
     Campaign: {
-      chain: "anvil",
+      chain: "liskTestnet",
       abi: CampaignABI,
-      startBlock: 1,
+      startBlock: 23681094,
       // endBlock: 24459809,
       address: process.env.CAMPAIGN_ADDRESS as `0x${string}`
     },
     BrandDeal: {
-      chain: "anvil",
+      chain: "liskTestnet",
       abi: BrandDealABI,
-      startBlock: 1,
+      startBlock: 23681094,
       // endBlock: 24459809,
       address: process.env.BRAND_DEAL_ADDRESS as `0x${string}`
     },
   },
   blocks: {
     ChainlinkOracleUpdate: {
-      chain: "anvil",
+      chain: "liskTestnet",
       interval: 10, // Every 10 blocks
       startBlock: 1000,
     },

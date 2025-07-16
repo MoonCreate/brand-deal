@@ -28,7 +28,7 @@ const registerController = new Hono()
         "attributes": [
           {
             "trait_type": "Role",
-            "value": "Creator"
+            "value": "Brand"
           },
           {
             "trait_type": "Email",
