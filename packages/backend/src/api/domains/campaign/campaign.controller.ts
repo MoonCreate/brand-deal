@@ -1,7 +1,6 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { createCampaign } from "./dtos/createCampaign.dto";
-import { creatorApplyCampaign } from "./dtos/creatorApplyCampaigns.dto";
 import { PinataSDK } from "pinata";
 import { creatorPool } from "ponder:schema";
 // import { db } from "ponder:api";
@@ -14,34 +13,32 @@ const pinata = new PinataSDK({
 });
 
 const campaignController = new Hono()
-  .get("/", (c) => c.json("Hello World"))
-  .post("/create", zValidator("json", createCampaign), async (c) => {
+  .post("/create", zValidator("form", createCampaign), async (c) => {
     try {
-      const jsonData = c.req.valid('json');
+      const body = c.req.valid('form');
+
+      const uploadImg = await pinata.upload.public.file(body.image);
+      const imgUrl = `https://${process.env.PINATA_GATEWAY}/ipfs/${uploadImg.cid}`;
       const metadata = {
-        name: jsonData.campaignName,
-        description: jsonData.description,
-        image: jsonData.image,
+        name: body.name,
+        description: body.description,
+        image: imgUrl,
         attributes: [
           {
             "trait_type": "Brand Name",
-            "value": jsonData.brandName
+            "value": body.brandName
           },
           {
-            "trait_type": "Staked Budget (WEI)",
-            "value": jsonData.valueStaked,
+            "trait_type": "Staked Budget (USDC)",
+            "value": body.valueStaked,
             "display_type": "number"
-          },
-          {
-            "trait_type": "Prefered Location",
-            "value": jsonData.preferedLocation,
           },
         ]
       }
 
       console.log('Received JSON for upload:', metadata);
 
-      const upload = await pinata.upload.public.json(metadata).name(`${jsonData.campaignName}-${jsonData.brandName}.json`);
+      const upload = await pinata.upload.public.json(metadata).name(`${body.name}-${body.brandName}.json`);
 
       console.log('Pinata upload successful:', upload.cid);
 
@@ -54,9 +51,6 @@ const campaignController = new Hono()
         error: error.message || 'Unknown error',
       }, 500);
     }
-  })
-  // .post("/creator-apply", zValidator("json", creatorApplyCampaign), async (c) => {
-  //   const row = await db.execute("")
-  // })
+  });
 
 export { campaignController };
