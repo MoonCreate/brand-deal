@@ -4,7 +4,7 @@ import { createCampaign } from "./dtos/createCampaign.dto";
 import { creatorApplyCampaign } from "./dtos/creatorApplyCampaigns.dto";
 import { PinataSDK } from "pinata";
 import { creatorPool } from "ponder:schema";
-import { db } from "ponder:api";
+// import { db } from "ponder:api";
 import 'dotenv/config';
 
 const pinata = new PinataSDK({
@@ -55,8 +55,8 @@ const campaignController = new Hono()
       }, 500);
     }
   })
-  .post("/creator-apply", zValidator("json", creatorApplyCampaign), async (c) => {
-    const row = await db.execute("")
-  })
+  // .post("/creator-apply", zValidator("json", creatorApplyCampaign), async (c) => {
+  //   const row = await db.execute("")
+  // })
 
 export { campaignController };

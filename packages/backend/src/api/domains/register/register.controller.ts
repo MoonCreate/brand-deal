@@ -14,16 +14,17 @@ const pinata = new PinataSDK({
 const registerController = new Hono()
   .get("/", (c) => c.json("Hello World"))
   .get("/validate", )
-  .post("/brand", zValidator("json", registerBrandDto), async (c) => {
+  .post("/brand", zValidator('form', registerBrandDto), async (c) => {
     try {
-      const jsonData = c.req.valid('json');
+      const body = c.req.valid('form');
 
-      console.log('Received JSON for upload:', jsonData);
+      const uploadImg = await pinata.upload.public.file(body.image);
 
+      const imgUrl = `https://${process.env.PINATA_GATEWAY}/ipfs/${uploadImg.cid}`;
       const metadata = {
-        "name": jsonData.name,
-        "description": jsonData.description,
-        "image": jsonData.image,
+        "name": body.name,
+        "description": body.description,
+        "image": imgUrl,
         "attributes": [
           {
             "trait_type": "Role",
@@ -31,39 +32,36 @@ const registerController = new Hono()
           },
           {
             "trait_type": "Email",
-            "value": jsonData.email
+            "value": body.email
           },
           {
             "trait_type": "Web",
-            "value": jsonData.web
+            "value": body.web
           },
           {
             "trait_type": "NIB",
-            "value": jsonData.nib
+            "value": body.nib
           },
           {
             "trait_type": "Social Links",
-            "value": jsonData.socialLink
+            "value": body.socialLinks
           },
           {
             "trait_type": "Joined Platform",
-            "value": new Date().getUTCMilliseconds()
+            "value": Date.now()
           },
           {
             "trait_type": "Creator Address",
-            "value": jsonData.walletAddress // Opsional, jika ingin alamat di metadata publik
+            "value": body.walletAddress // Opsional, jika ingin alamat di metadata publik
           }
         ]
       }
 
-      const upload = await pinata.upload.public.json(jsonData).name(`${jsonData.email}.json`);;
+      const upload = await pinata.upload.public.json(metadata).name(`${body.email}.json`);
 
       console.log('Pinata upload successful:', upload.cid);
 
-      return c.json({
-        upload,
-      }, 200);
-
+      return c.json(upload, 200);
     } catch (error: any) {
       console.error('Error uploading JSON to Pinata:', error);
       return c.json({
@@ -72,16 +70,20 @@ const registerController = new Hono()
       }, 500);
     }
   })
-  .post("/creator", zValidator("json", registerCreatorDto), async (c) => {
+  .post("/creator", zValidator('form', registerCreatorDto), async (c) => {
     try {
-      const jsonData = c.req.valid('json');
+      const body = c.req.valid('form');
 
-      console.log('Received JSON for upload:', jsonData);
+      console.log('Received JSON for upload:', body);
+
+      const uploadImg = await pinata.upload.public.file(body.image);
+
+      const imgUrl = `https://${process.env.PINATA_GATEWAY}/ipfs/${uploadImg.cid}`;
 
       const metadata = {
-        "name": jsonData.publicName,
-        "description": jsonData.description,
-        "image": jsonData.photoProfile,
+        "name": body.name,
+        "description": body.description,
+        "image": imgUrl,
         "attributes": [
           {
             "trait_type": "Role",
@@ -89,28 +91,28 @@ const registerController = new Hono()
           },
           {
             "trait_type": "Email",
-            "value": jsonData.email
+            "value": body.email
           },
           {
             "trait_type": "location Address",
-            "value": jsonData.locationAddress
+            "value": body.locationAddress
           },
           {
             "trait_type": "Social Links",
-            "value": jsonData.socialLink
+            "value": body.socialLinks
           },
           {
             "trait_type": "Joined Platform",
-            "value": new Date().getUTCMilliseconds()
+            "value": Date.now()
           },
           {
             "trait_type": "Creator Address",
-            "value": jsonData.walletAddress // Opsional, jika ingin alamat di metadata publik
+            "value": body.walletAddress // Opsional, jika ingin alamat di metadata publik
           }
         ]
       }
 
-      const upload = await pinata.upload.public.json(metadata).name(`${jsonData.email}.json`);
+      const upload = await pinata.upload.public.json(metadata).name(`${body.email}.json`);
 
       console.log('Pinata upload successful:', upload.cid);
 
@@ -150,11 +152,11 @@ const registerController = new Hono()
   //     ])
   //     console.log("files deleted", deletedFiles)
   //     // return c.json(deletedFiles, 200)
-  //     const jsonData = c.req.valid('json');
+  //     const body = c.req.valid('json');
 
-  //     console.log('Received JSON for upload:', jsonData);
+  //     console.log('Received JSON for upload:', body);
 
-  //     const upload = await pinata.upload.public.json(jsonData).name(`${jsonData.email}.json`);
+  //     const upload = await pinata.upload.public.json(body).name(`${body.email}.json`);
 
   //     console.log('Pinata upload successful:', upload);
 
