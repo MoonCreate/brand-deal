@@ -17,10 +17,6 @@ const lists = [
     to: '/dashboard',
     label: 'Dashboard',
   },
-  {
-    to: '/profile',
-    label: 'Profile',
-  },
 ] as const
 
 export function Navbar() {

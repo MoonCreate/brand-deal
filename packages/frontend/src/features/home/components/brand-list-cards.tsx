@@ -3,7 +3,7 @@ import { motion } from 'motion/react'
 import { LucideTrendingUp } from 'lucide-react'
 import { useGetBrandList } from '@/hooks/use-get-brand-list'
 import { bop } from '@/lib/animation-const'
-import { cn } from '@/lib/utils'
+import { cn, formatNumber } from '@/lib/utils'
 import { SplitPopAnimation } from '@/components/text/split-pop-animation'
 
 export function BrandListCards() {
@@ -48,8 +48,8 @@ export function BrandListCards() {
           >
             <img
               className="object-cover h-full w-[326.54px] rounded-xl"
-              src={brands?.[brandIndex].image}
-              alt={brands?.[brandIndex].name}
+              src={brands?.[brandIndex].metadata.image}
+              alt={brands?.[brandIndex].metadata.name}
             />
           </div>
           <h2
@@ -59,14 +59,16 @@ export function BrandListCards() {
               isLoading && 'animate-pulse bg-surface-2 rounded-xl',
             )}
           >
-            <SplitPopAnimation text={brands?.[brandIndex].name} />
+            <SplitPopAnimation text={brands?.[brandIndex].metadata.name} />
           </h2>
           <p>{!isLoading && 'Brand'}</p>
           {!isLoading && (
             <div className="flex gap-2 items-center text-primary font-semibold text-lg">
               <LucideTrendingUp strokeWidth={3} className="size-4" />{' '}
               <span>
-                <SplitPopAnimation text={brands?.[brandIndex].followers} />
+                <SplitPopAnimation
+                  text={formatNumber(((Math.random() * 1_000) | 0) + 1_000)}
+                />
               </span>
               <div className="ml-auto flex gap-2">
                 <div className="size-3 rounded-full bg-primary"></div>

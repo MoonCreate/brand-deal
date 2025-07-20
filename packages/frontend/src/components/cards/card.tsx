@@ -9,20 +9,19 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/avatar'
 import { cn } from '@/lib/utils'
 import { flipCard } from '@/lib/animation-const'
 
-const CAMPAIGN_DUMMY_DATA = {
-  label: 'Soon',
-  title: 'iPhone 15 Pro Creator',
-  description:
-    'Create stunning content show casing iPhone 15 Pro camera capabilities',
-  price: '75,000',
-  category: 'Technology',
-  requirements: '5M+ followers',
-  engagement: '6.8M',
-  applications: '156',
-  image: CameraCampaign,
-  logo: 'https://preview-campaign-page-design-kzmp654mayrizwzafer0.vusercontent.net/placeholder.svg?height=60&width=60',
-  status: 'Active',
-  deadline: 'Dec 15, 2024',
+export type CampaignCardData = {
+  label: string
+  title: string
+  description: string
+  price: string
+  category: string
+  requirements: string
+  engagement: string
+  applications: string
+  image: string
+  logo: string
+  status: string
+  deadline: string
 }
 
 export function Card({
@@ -49,26 +48,24 @@ export function CampaignCard({
   className,
   children,
   ...props
-}: HTMLMotionProps<'div'>) {
+}: HTMLMotionProps<'div'> & { data: CampaignCardData }) {
   return (
     <motion.div
       animate={flipCard}
       whileHover={{ scale: 1.05 }}
-      className="w-full h-[450px]  rounded-4xl relative border"
+      className={cn('w-full h-[450px]  rounded-4xl relative border', className)}
       id="campaign-card"
       {...props}
     >
       <img
-        src={
-          'https://i.pinimg.com/1200x/93/31/24/933124fe6b508c2ab7cec6770bc085f5.jpg'
-        }
+        src={props.data.image}
         className="rounded-4xl w-full h-full border-2 border-muted-foreground/40"
       />
       <div
         id="label"
         className="min-w-28 h-8  absolute right-0 top-9 flex items-center px-4 rounded-l-2xl gap-2 bg-blue-100 shadow-xl shadow-muted-foreground/40"
       >
-        ● <span className="text-sm font-bold">{CAMPAIGN_DUMMY_DATA.label}</span>
+        ● <span className="text-sm font-bold">{props.data.label}</span>
       </div>
 
       <div
@@ -105,7 +102,7 @@ export function CampaignCard({
                 <AvatarFallback>ER</AvatarFallback>
               </Avatar>
               <div className="bg-muted-foreground text-white text-[10px] h-fit z-10 px-2 rounded-md -bottom-2 absolute -right-2 shadow-lg shadow-pink-200">
-                45+
+                {props.data.applications}
               </div>
             </div>
           </div>
@@ -116,10 +113,10 @@ export function CampaignCard({
             className="w-full rounded-r-4xl px-2 text-[9px] text-muted-foreground "
           >
             <div id="title" className="text-[11px] font-semibold text-black">
-              {CAMPAIGN_DUMMY_DATA.title}
+              {props.data.title}
             </div>
             <div id="description" className="w-4/5">
-              {CAMPAIGN_DUMMY_DATA.description}
+              {props.data.description}
             </div>
 
             <div
@@ -128,7 +125,7 @@ export function CampaignCard({
             >
               <div className="flex items-center">
                 <DollarSign className="w-3 h-3" />
-                {CAMPAIGN_DUMMY_DATA.price}
+                {props.data.price}
               </div>
               <div className="flex gap-[2px]">
                 <CalendarDaysIcon className="w-3 h-3" />
@@ -142,20 +139,20 @@ export function CampaignCard({
             >
               <div className="flex items-center gap-[2px]">
                 <Eye className="w-3 h-3" />
-                {CAMPAIGN_DUMMY_DATA.engagement}
+                {props.data.engagement}
               </div>
               <div className="flex gap-1">
                 <Users className="w-3 h-3" />
-                <span>{CAMPAIGN_DUMMY_DATA.applications}</span> Applied
+                <span>{props.data.applications}</span> Applied
               </div>
             </div>
 
             <div id="requirements" className="mt-2">
-              Requirements: <span>{CAMPAIGN_DUMMY_DATA.requirements}</span>
+              Requirements: <span>{props.data.requirements}</span>
             </div>
 
             <div id="deadline" className="mt-1">
-              Deadline: <span>{CAMPAIGN_DUMMY_DATA.deadline}</span>
+              Deadline: <span>{props.data.deadline}</span>
             </div>
 
             <Button className="mt-1 rounded-full text-[9px]">Apply Now</Button>

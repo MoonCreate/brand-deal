@@ -2,7 +2,7 @@ import { LucideHeart } from 'lucide-react'
 import { useState } from 'react'
 import { motion } from 'motion/react'
 import { bop } from '@/lib/animation-const'
-import { cn } from '@/lib/utils'
+import { cn, formatNumber } from '@/lib/utils'
 import { useGetCreatorList } from '@/hooks/use-get-creator-list'
 import { SplitPopAnimation } from '@/components/text/split-pop-animation'
 
@@ -44,19 +44,21 @@ export function CreatorListCard() {
             <div className="bg-surface-1 rounded-x-xl rounded-b-xl rounded-tr-xl shadow-box p-6">
               <div className="bg-surface-2 rounded-xl h-[324px] w-[479px]">
                 <img
-                  src={creator?.image}
-                  alt={creator?.name}
+                  src={creator?.metadata.image}
+                  alt={creator?.metadata.name}
                   className="w-full h-full object-cover rounded-xl"
                 />
               </div>
               <h2 className="font-karantina text-5xl mt-5 overflow-y-hidden">
-                <SplitPopAnimation text={creator?.name} />
+                <SplitPopAnimation text={creator?.metadata.name} />
               </h2>
               <p className="">Creator</p>
               <div className="flex gap-2 items-center text-primary font-semibold text-lg">
                 <LucideHeart strokeWidth={3} className="size-4" />{' '}
                 <span>
-                  <SplitPopAnimation text={creator?.followers} />
+                  <SplitPopAnimation
+                    text={formatNumber(((Math.random() * 1_000) | 0) + 1_000)}
+                  />
                 </span>
                 <div className="ml-auto flex gap-2">
                   <div className="size-3 rounded-full bg-primary"></div>

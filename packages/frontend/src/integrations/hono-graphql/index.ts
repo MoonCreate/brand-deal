@@ -1,7 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import {  Mobius } from "graphql-mobius";
-import type {CreateQuery} from "graphql-mobius";
-import type { Selective } from "@/types";
+import { useQuery } from '@tanstack/react-query'
+import { Mobius } from 'graphql-mobius'
+import type { CreateQuery } from 'graphql-mobius'
+import type { Brand, Selective } from '@/types'
 
 export async function graphql(query: string) {
   return fetch(import.meta.env.VITE_GRAPHQL_SERVER, {
@@ -425,16 +425,21 @@ type Declaration = `
 `
 
 type Scalars = {
-  BigInt: `${number}`,
-  JSON: object,
+  BigInt: `${number}`
+  JSON: any
+  BrandMetadata: Brand['metadata']
 }
 export const mobius = new Mobius<Declaration, Scalars>({
   url: import.meta.env.VITE_GRAPHQL_SERVER,
 })
 
-type Klein = NonNullable<typeof mobius.klein>;
+type Klein = NonNullable<typeof mobius.klein>
 
-// @ts-expect-error its so deep it reaches the deep heart
-export const useMobiusQuery = <TQuery extends Selective<CreateQuery<Klein["Query"]>>>(query: TQuery) => {
+export const useMobiusQuery = <
+  // @ts-expect-error its so deep it reaches the deep heart
+  TQuery extends Selective<CreateQuery<Klein['Query']>>,
+>(
+  query: TQuery,
+) => {
   return useQuery({ queryKey: [query], queryFn: () => mobius.query(query) })
-};
+}

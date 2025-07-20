@@ -9,13 +9,17 @@ import { SocialLinkDropdown } from '../dropdown/sociallink-dropdown'
 import { dialogInjection } from '@/injection/dialog-injection'
 import { cn } from '@/lib/utils'
 import { bop } from '@/lib/animation-const'
-import { useRegisterCreator } from '@/hooks/use-register-creator'
+import { useRegistercreator } from '@/hooks/use-register-creator'
+import { darwinia } from 'viem/chains'
+import { useAccount } from 'wagmi'
+import type { Address } from 'viem'
 
 type RegisterCreatorDto = {
   publicName: string
   photoProfile: File
   description: string
   email: string
+  locationAddress: string
   socialLink: Array<{
     type: string
     link: string
@@ -25,19 +29,31 @@ type RegisterCreatorDto = {
 
 export function RegisterAsContentCreatorDialog() {
   const dialog = dialogInjection.use()
-  const { mutate, isPending } = useRegisterCreator()
+  const [{ mutate, isPending }] = useRegistercreator()
   const form = useForm<RegisterCreatorDto>()
   const [socialLength, setSocialLength] = useState(1)
+  const account = useAccount()
 
   return (
     <form
       onSubmit={form.handleSubmit((data) => {
-        mutate(data, {
-          onSuccess: async () => {
-            console.log(data)
-            await dialog.close()
+        if (!account.address) return
+        mutate(
+          {
+            name: data.publicName,
+            description: data.description,
+            email: data.email,
+            image: data.photoProfile,
+            locationAddress: data.locationAddress,
+            socialLinks: JSON.stringify(data.socialLink),
+            walletAddress: account.address as Address,
           },
-        })
+          {
+            onSuccess: async () => {
+              await dialog.close()
+            },
+          },
+        )
       })}
       className={cn(
         'bg-background text-black font-roboto rounded-xl p-6 shadow-box',
@@ -87,6 +103,13 @@ export function RegisterAsContentCreatorDialog() {
             <textarea
               placeholder="Describe yourself"
               {...form.register('description')}
+            />
+          </label>
+          <label>
+            Location Address
+            <textarea
+              placeholder="Location Address"
+              {...form.register('locationAddress')}
             />
           </label>
           <label>

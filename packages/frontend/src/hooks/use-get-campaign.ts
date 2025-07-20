@@ -1,42 +1,52 @@
 import { useQuery } from '@tanstack/react-query'
-import type { Campaign, GraphqlResponse } from '@/types'
-import { graphql, useMobiusQuery } from '@/integrations/hono-graphql'
+import type { Address } from 'viem'
+import { mobius } from '@/integrations/hono-graphql'
 
-export function useGetCampaigns() {
+export function useGetCampaigns(props: { creator?: Address; brand?: Address }) {
   return useQuery({
-    queryKey: ['campaigns'],
+    queryKey: ['campaigns', props],
     queryFn: async () => {
-      const result: GraphqlResponse<{
-        campaigns: { items: Campaign }
-      }> = await graphql(`
-        query MyQuery {
-          campaigns {
-            items {
-              stakedAmount
-              brandWalletAddress
-              creatorWalletAddress
-              deadline
-              metadataURI
-              metadata
-              submitMetadataURI
-              status
-              blockNumber
-              blockTimestamp
-              transactionHash
-            }
-          }
-        }
-      `)
-      return result
-    },
-  })
-}
+      const result = await mobius.query({
+        // @ts-expect-error anjjjjjj
+        campaigns: {
+          select: {
+            items: {
+              metadata: true,
+              brandWalletAddress: true,
+              campaignNFTId: true,
+              stakedAmount: true,
+              status: true,
+              brand: {
+                metadata: true,
+              },
+              creatorPools: {
+                select: {
+                  items: {
+                    creatorWalletAddress: true,
+                    creator: { name: true, metadata: true },
+                  },
+                },
+              },
+            },
+          },
+        },
+      })
 
-export function useGetBrandByAddress(address: `0x${string}`) {
-  const { data } = useMobiusQuery({
-    brand: {
-      where: { brandWalletAddress: address },
-      select: { metadata: true, blockNumber: true, blockTimestamp: true },
+      if (props.brand && result) {
+        result.campaigns.items = result.campaigns.items.filter(
+          (item) => item.brandWalletAddress === props.brand,
+        )
+      }
+
+      if (props.creator && result) {
+        result.campaigns.items = result.campaigns.items.filter((item) =>
+          item.creatorPools.items.some(
+            (pool) => pool.creatorWalletAddress === props.creator,
+          ),
+        )
+      }
+
+      return result
     },
   })
 }

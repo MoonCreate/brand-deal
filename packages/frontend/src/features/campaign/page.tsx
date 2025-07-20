@@ -9,10 +9,16 @@ import { motion } from 'motion/react'
 import { Button } from '@/components/buttons/button'
 import { SplitPopAnimation } from '@/components/text/split-pop-animation'
 import { bop } from '@/lib/animation-const'
-import { Card } from '@/components/cards/card'
+import {
+  CampaignCard,
+  Card,
+  type CampaignCardData,
+} from '@/components/cards/card'
 import { cn } from '@/lib/utils'
 import { useAccount } from 'wagmi'
 import { ConnectButton } from '@/components/buttons/connect-button'
+import { useGetCampaigns } from '@/hooks/use-get-campaign'
+import { useMemo } from 'react'
 
 const campaigns = [
   {
@@ -125,6 +131,55 @@ const campaigns = [
   },
 ]
 
+function CampaignList() {
+  const { data, isLoading } = useGetCampaigns({})
+
+  const processedData = useMemo(
+    () =>
+      data?.campaigns.items.map(
+        (item) =>
+          ({
+            label: item.status ?? '',
+            title: item.metadata?.name,
+            description: item.metadata?.description,
+            price: item.stakedAmount!,
+            category: 'Technology',
+            requirements: item.metadata?.requirements,
+            applications: item.creatorPools.items.length + '',
+            image: item.metadata?.image,
+            logo: item.brand.metadata?.image,
+            status: item.status!,
+            engagement: item.metadata.engagment,
+            deadline: item.metadata?.deadline,
+          }) satisfies CampaignCardData,
+      ),
+    [data],
+  )
+
+  return isLoading ? (
+    <div className="flex flex-1 gap-3 mt-3">
+      <motion.div
+        animate={bop}
+        className="w-[289px] h-[448px] rounded-xl bg-gray-500 animate-pulse"
+      ></motion.div>
+      <motion.div
+        animate={bop}
+        className="w-[289px] h-[448px] rounded-xl bg-gray-500 animate-pulse"
+      ></motion.div>
+      <motion.div
+        animate={bop}
+        className="w-[289px] h-[448px] rounded-xl bg-gray-500 animate-pulse"
+      ></motion.div>
+    </div>
+  ) : (
+    <div className="flex">
+      {processedData?.map((x, i) => (
+        <CampaignCard className='max-w-[289px]' key={i} data={x as never} />
+      ))}
+    </div>
+  )
+}
+
 export function CampaignPage() {
   const account = useAccount()
   return (
@@ -171,82 +226,7 @@ export function CampaignPage() {
       {/* Campaign Grid */}
       <div className="overflow-auto">
         <motion.div className="flex gap-6 p-6 w-max" animate={bop}>
-          {campaigns.map((campaign) => (
-            <Card key={campaign.id} className={cn('flex flex-col shrink-0')}>
-              <div className="relative w-max mb-3">
-                <img
-                  src={campaign.image || '/placeholder.svg'}
-                  alt={campaign.title}
-                  className="h-[200px] w-[300px] object-cover rounded-xl"
-                />
-              </div>
-
-              <div className="pb-3">
-                <div className="flex items-center space-x-3 mb-2">
-                  <img
-                    src={campaign.logo || '/placeholder.svg'}
-                    alt={`${campaign.brand} logo`}
-                    className="rounded-lg size-[40px] object-cover"
-                  />
-                  <div>
-                    <h3 className="font-semibold text-lg">{campaign.brand}</h3>
-                    <div className="text-xs">{campaign.category}</div>
-                  </div>
-                </div>
-                <h4 className="font-medium text-gray-900 line-clamp-2">
-                  {campaign.title}
-                </h4>
-                <p className="text-sm text-gray-600 w-55">
-                  {campaign.description}
-                </p>
-              </div>
-
-              <div className="space-y-3 mb-2">
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center space-x-1 text-green-600">
-                    <LucideDollarSign className="w-4 h-4" />
-                    <span className="font-medium">{campaign.budget}</span>
-                  </div>
-                  <div className="flex items-center space-x-1 text-gray-500">
-                    <LucideCalendarDays className="w-4 h-4" />
-                    <span>{campaign.duration}</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center space-x-1 text-gray-500">
-                    <LucideEye className="w-4 h-4" />
-                    <span>{campaign.engagement}</span>
-                  </div>
-                  <div className="flex items-center space-x-1 text-gray-500">
-                    <LucideUsers className="w-4 h-4" />
-                    <span>{campaign.applications} applied</span>
-                  </div>
-                </div>
-
-                <div className="text-xs text-gray-500">
-                  <span>Requirements: {campaign.requirements}</span>
-                </div>
-
-                <div className="text-xs text-gray-500">
-                  <span>Deadline: {campaign.deadline}</span>
-                </div>
-              </div>
-
-              <div className="mt-auto flex items-center">
-                {account.address ? (
-                  <Button className=" w-max">Apply Now</Button>
-                ) : (
-                  <ConnectButton />
-                )}
-                <div className="ml-auto flex gap-2">
-                  <div className="size-3 rounded-full bg-primary"></div>
-                  <div className="size-3 rounded-full bg-secondary"></div>
-                  <div className="size-3 rounded-full bg-secondary"></div>
-                </div>
-              </div>
-            </Card>
-          ))}
+          <CampaignList />
         </motion.div>
       </div>
     </div>
