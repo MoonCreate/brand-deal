@@ -2,19 +2,20 @@ import { Bookmark, Globe, Link, Mail } from 'lucide-react'
 import { useNavigate } from '@tanstack/react-router'
 import { motion } from 'motion/react'
 import { useMemo } from 'react'
-import {
-  CampaignCard
-  
-} from '../../components/cards/card'
-import type {CampaignCardData} from '../../components/cards/card';
+import { CampaignCard } from '../../components/cards/card'
+import type { CampaignCardData } from '../../components/cards/card'
 import type { Brand } from '@/types'
 import { Button } from '@/components/buttons/button'
 import { SocialCard } from '@/components/cards/social-card'
 import { useGetCampaigns } from '@/hooks/use-get-campaign'
 import { bop } from '@/lib/animation-const'
+import { useAccount } from 'wagmi'
 
 function CampaignList() {
-  const { data, isLoading } = useGetCampaigns()
+  const account = useAccount()
+  const { data, isLoading } = useGetCampaigns({
+    brand: account.address,
+  })
 
   const processedData = useMemo(
     () =>
@@ -27,14 +28,14 @@ function CampaignList() {
             price: item.stakedAmount!,
             category: 'Technology',
             requirements: item.metadata?.requirements,
-            applications: item.creatorPools.items.length + "",
+            applications: item.creatorPools.items.length + '',
             image: item.metadata?.image,
             logo: item.brand.metadata?.image,
             status: item.status!,
             engagement: item.metadata.engagment,
             deadline: item.metadata?.deadline,
             brandLogo: item.brand.metadata.image,
-            brandName: item.brand.metadata.name
+            brandName: item.brand.metadata.name,
           }) satisfies CampaignCardData,
       ),
     [data],
@@ -58,9 +59,12 @@ function CampaignList() {
   ) : (
     <div className="flex flex-1 gap-3 mt-3">
       {processedData?.map((x, i) => (
-        <CampaignCard className='max-w-[280px]' key={i} data={x as never} buttonChild={
-          <Button>Review</Button>
-        } />
+        <CampaignCard
+          className="max-w-[280px]"
+          key={i}
+          data={x as never}
+          buttonChild={<Button>Review</Button>}
+        />
       ))}
     </div>
   )

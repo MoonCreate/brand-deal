@@ -2,7 +2,6 @@ import { CalendarDaysIcon, DollarSign, Eye, Users } from 'lucide-react'
 
 import { motion } from 'motion/react'
 
-import { Button } from '../buttons/button'
 import type { HTMLMotionProps } from 'motion/react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/avatar'
 import { cn } from '@/lib/utils'
