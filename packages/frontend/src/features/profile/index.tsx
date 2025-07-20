@@ -1,6 +1,7 @@
 import { Facebook, Instagram, Twitter } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useMemo } from 'react'
+import { useAccount } from 'wagmi'
 import type { Creator } from '@/types'
 import type { CampaignCardData } from '@/components/cards/card'
 import { CampaignCard, ProfileCard } from '@/components/cards/card'
@@ -9,8 +10,9 @@ import { useGetCampaigns } from '@/hooks/use-get-campaign'
 import { Button } from '@/components/buttons/button'
 
 function CampaignList() {
+  const account = useAccount()
   const { data, isLoading } = useGetCampaigns({
-    // creator: account.address,
+    creator: account.address,
   })
 
   const processedData = useMemo(

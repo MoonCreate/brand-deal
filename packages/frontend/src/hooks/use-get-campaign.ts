@@ -44,13 +44,15 @@ export function useGetCampaigns(
       }
 
       if (props.creator && result) {
-        result.campaigns.items = result.campaigns.items.filter((item) =>
-          item.creatorPools.items.some(
-            (pool) =>
-              pool.creatorWalletAddress?.toLowerCase() ===
+        result.campaigns.items = result.campaigns.items.filter((item) => {
+          const has = item.creatorPools.items.some(
+            (it2) =>
+              it2.creatorWalletAddress?.toLowerCase() ===
               props.creator?.toLowerCase(),
-          ),
-        )
+          )
+          return has
+        })
+
       }
 
       return result

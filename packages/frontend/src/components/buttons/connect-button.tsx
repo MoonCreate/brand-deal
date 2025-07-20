@@ -1,4 +1,4 @@
-import { useConnectModal, useProfileModal, useChainModal } from '@xellar/kit'
+import { useChainModal, useConnectModal, useProfileModal } from '@xellar/kit'
 import { useAccount } from 'wagmi'
 import { LucideLink, LucideUser, LucideWallet } from 'lucide-react'
 import { Button } from './button'

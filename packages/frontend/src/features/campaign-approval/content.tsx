@@ -1,10 +1,17 @@
-import { useNavigate } from '@tanstack/react-router'
+import { useLoaderData, useNavigate, useSearch } from '@tanstack/react-router'
 import { Check, Facebook, Instagram, Twitter, X } from 'lucide-react'
 import { Button } from '@/components/buttons/button'
 import { CampaignCard } from '@/components/cards/card'
 
 export const CampaignApprovalContent = () => {
-  const nav = useNavigate({ from: '/campaign/approval' })
+  const data = useLoaderData({
+    // @ts-expect-error yttaa
+    from: '/_no-layout/campaign/approval/$id',
+  }) as any
+  // @ts-expect-error yttaa
+  const nav = useNavigate({ from: '/campaign/approval/$id' })
+
+  console.log(data)
 
   const handleBackClick = () => {
     nav({ to: '/campaign' })
@@ -30,7 +37,9 @@ export const CampaignApprovalContent = () => {
           >
             Campaign
           </div>
-          <CampaignCard />
+          {/* <CampaignCard data={{
+            applications: { }
+          }} /> */}
         </div>
       </div>
       <div
