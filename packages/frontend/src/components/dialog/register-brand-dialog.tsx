@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form'
-import { LucideArrowUp } from 'lucide-react'
+import { LucideArrowUp, LucidePlus } from 'lucide-react'
 import { motion } from 'motion/react'
+import { Fragment, useState } from 'react'
 import { Button } from '../buttons/button'
 import { DropZone } from '../inputs/dropzone'
 import { SplitPopAnimation } from '../text/split-pop-animation'
@@ -8,6 +9,8 @@ import { useRegisterBrand } from '@/hooks/use-register-brand'
 import { dialogInjection } from '@/injection/dialog-injection'
 import { cn } from '@/lib/utils'
 import { bop } from '@/lib/animation-const'
+import { useAccount } from 'wagmi'
+import { SocialLinkDropdown } from '../dropdown/sociallink-dropdown'
 
 type RegisterBrandDto = {
   instanceName: string
@@ -15,24 +18,38 @@ type RegisterBrandDto = {
   description: string
   email: string
   web: string
-  socialLink: string
+  socialLink: Array<{ link: string; type: string }>
   nib: string
 }
 
 export function RegisterAsBrandDialog() {
   const dialog = dialogInjection.use()
-  const { mutate, isPending } = useRegisterBrand()
+  const [{ mutate, isPending }] = useRegisterBrand()
   const form = useForm<RegisterBrandDto>()
+  const account = useAccount()
+  const [socialLength, setSocialLength] = useState(1)
 
   return (
     <form
       onSubmit={form.handleSubmit((data) => {
-        mutate(data, {
-          onSuccess: async () => {
-            await dialog.close()
-            dialog.open('Register Success')
+        if (!account.address) return
+        mutate(
+          {
+            description: data.description,
+            email: data.email,
+            image: data.logoBrand,
+            name: data.instanceName,
+            nib: data.nib,
+            socialLinks: JSON.stringify(data.socialLink),
+            walletAddress: account.address,
+            web: data.web,
           },
-        })
+          {
+            onSuccess: async () => {
+              await dialog.close()
+            },
+          },
+        )
       })}
       className={cn(
         'bg-background text-black font-roboto rounded-xl p-6 shadow-box',
@@ -84,10 +101,6 @@ export function RegisterAsBrandDialog() {
             <input {...form.register('web')} type="url" />
           </label>
           <label>
-            Social Link
-            <input {...form.register('socialLink')} type="url" />
-          </label>
-          <label>
             NIB
             <input {...form.register('nib')} />
           </label>
@@ -96,6 +109,37 @@ export function RegisterAsBrandDialog() {
           <DropZone onDrop={(file) => form.setValue('logoBrand', file![0])} />
         </motion.div>
       </div>
+      <motion.div
+        animate={bop}
+        className="grid grid-cols-[150px_1fr] gap-6 mt-4 max-h-[200.8px] overflow-auto px-2 -mx-2 relative pb-2"
+      >
+        <div className="bg-background col-span-2 sticky top-0 -mx-2 px-2 flex pt-2">
+          <p>Social Links {socialLength}</p>
+          <Button
+            onClick={() => setSocialLength((x) => x + 1)}
+            type="button"
+            className="w-max ml-auto h-max"
+          >
+            <LucidePlus className="size-4" />
+            ADD
+          </Button>
+        </div>
+        {Array.from({ length: socialLength }, (_, i) => (
+          <Fragment key={i}>
+            <SocialLinkDropdown
+              className="h-max"
+              onChangeValue={(value) =>
+                form.setValue(`socialLink.${i}.type`, value)
+              }
+            />
+            <input
+              placeholder="http://...."
+              {...form.register(`socialLink.${i}.link`)}
+              className="p-2 rounded-xl shadow-md border h-max"
+            />
+          </Fragment>
+        ))}
+      </motion.div>
       <div className="mt-5 flex items-center justify-between">
         <div className="flex gap-2">
           <div className="size-3 rounded-full bg-primary"></div>

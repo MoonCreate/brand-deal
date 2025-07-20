@@ -23,7 +23,7 @@ export function TitleHeadline() {
   }, [headlines])
   return (
     <motion.div animate={bop} className="origin-left">
-      <h2 className="text-9xl font-karantina">BRAND DEAL</h2>
+      <h2 className="text-9xl font-karantina">COLLABORA</h2>
       <h3 className="text-2xl overflow-x-hidden">
         <SplitPopAnimation text={headlines[headlineIndex]} />
       </h3>

@@ -1,26 +1,73 @@
-import { useWriteContract } from 'wagmi'
+import { useConfig, useWriteContract } from 'wagmi'
+import { useMutation } from '@tanstack/react-query'
+import toast from 'react-hot-toast'
+import { waitForTransactionReceipt} from '@wagmi/core';
 import { brandDealAddress } from '@/integrations/contract'
 import { brandDealContractABI } from '@/integrations/contract/abis/brand-deal-abi'
 import { backend } from '@/integrations/hono-api'
-import { useMutation } from '@tanstack/react-query'
+import { createBlockExplorerLink, createIPFSGatewayURL } from '@/lib/utils'
 
 type RegisterBrandDto = Parameters<
   typeof backend.api.register.brand.$post
->[0]['json']
+>[0]['form']
 export function useRegisterBrand() {
-  const { writeContractAsync, ...restContracts } = useWriteContract()
-  const { mutation } = useMutation({
+  const config = useConfig();
+  const { writeContractAsync, ...restContracts } = useWriteContract({
+    mutation: {
+      onMutate: () => {
+        toast.loading('Calling contract...', { id: 'register-brand' })
+      },
+
+      onSuccess: (tx) => {
+        toast.loading(
+          `Transaction hash generated\n${createBlockExplorerLink(tx)}`,
+          {
+            id: 'register-brand',
+          },
+        )
+      },
+    },
+  })
+  const mutation = useMutation({
     mutationKey: ['registerBrand'],
+    onMutate: () => {
+      toast.loading('Registering brand...', { id: 'register-brand' })
+    },
+
+    onSuccess: () => {
+      toast.success('Successfully registered brand', {
+        id: 'register-brand',
+      })
+    },
+
+    onError: (error) => {
+      console.error(error);
+      toast.error('Failed to register brand', { id: 'register-brand' })
+    },
+
     mutationFn: async (dto: RegisterBrandDto) => {
       const metadata = await (
-        await backend.api.register.brand.$post({ json: dto })
+        await backend.api.register.brand.$post({ form: dto })
       ).json()
-      writeContractAsync({
+
+      // @ts-ignore blbablbabla
+      if (metadata.error) throw metadata.error
+
+      const hash = await writeContractAsync({
         abi: brandDealContractABI,
         address: brandDealAddress,
         functionName: 'registerBrand',
-        args: [dto.name, metadata.cid, dto.nib],
+        args: [
+          dto.name,
+          // @ts-expect-error blbablbabla
+          createIPFSGatewayURL(metadata.cid),
+          BigInt(Number(dto.nib)),
+        ],
       })
+
+      return waitForTransactionReceipt(config, { hash });
     },
   })
+
+  return [mutation, restContracts] as const
 }

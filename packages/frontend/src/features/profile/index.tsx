@@ -1,9 +1,10 @@
 import { Facebook, Instagram, Twitter } from 'lucide-react'
 import { motion } from 'motion/react'
+import type { Creator } from '@/types'
 import { CampaignCard, ProfileCard } from '@/components/cards/card'
 import { pulseScale } from '@/lib/animation-const'
 
-export const Profile = () => {
+export const Profile = (props: { profile: Creator }) => {
   return (
     <main className="p-8  grow bg-blue-100/5 flex flex-col justify-between gap-10">
       {/* profile  */}

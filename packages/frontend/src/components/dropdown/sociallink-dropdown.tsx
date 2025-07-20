@@ -15,34 +15,35 @@ type SocialLink = {
   logo: string // e.g, https://www.facebook.com/favicon.ico
 }
 
-const socialLinks: Array<SocialLink> = [
-  {
+export const socialLinks = {
+  facebook: {
     key: 'facebook',
     name: 'Facebook',
     logo: 'https://www.facebook.com/favicon.ico',
   },
-  {
+  twitter: {
     key: 'twitter',
     name: 'Twitter',
     logo: 'https://www.twitter.com/favicon.ico',
   },
-  {
+  instagram: {
     key: 'instagram',
     name: 'Instagram',
     logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/1200px-Instagram_icon.png',
   },
-  {
+  linkedin: {
     key: 'linkedin',
     name: 'Linkedin',
     logo: 'https://www.linkedin.com/favicon.ico',
   },
-  {
+  github: {
     key: 'github',
     name: 'Github',
     logo: 'https://www.github.com/favicon.ico',
   },
-]
+} as const satisfies Record<string, SocialLink>
 
+const valueableSocialLinks = Object.values(socialLinks)
 export function SocialLinkDropdown(props: {
   onChangeValue?: (value: string) => unknown
   className?: string
@@ -76,7 +77,7 @@ export function SocialLinkDropdown(props: {
             props.onChangeValue?.(value)
           }}
         >
-          {socialLinks.map((item) => (
+          {valueableSocialLinks.map((item) => (
             <DropdownMenuRadioItem
               onClick={() => setCurrentSocial(item)}
               key={item.key}

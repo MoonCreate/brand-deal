@@ -1,6 +1,31 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
+import { getAccount } from '@wagmi/core'
 import { DashboardPage } from '@/features/dashboard/page'
+import { getProfile } from '@/hooks/use-get-profile'
+import { wagmiConfig } from '@/integrations/web3/provider'
+import { Profile } from '@/features/profile'
 
 export const Route = createFileRoute('/_layout/dashboard')({
-  component: DashboardPage,
+  beforeLoad: async () => {
+    const account = getAccount(wagmiConfig)
+    if (!account.chain || !account.address) {
+      throw redirect({ to: '/' })
+    }
+    const profile = await getProfile(account.address)
+    if (!profile) throw redirect({ to: '/' })
+    return { profile }
+  },
+  loader: (deps) => {
+    return deps.context.profile;
+  },
+  component: () => {
+    const data = Route.useLoaderData()
+    console.log(data);
+
+    return data.type === 'brand' ? (
+      <DashboardPage brand={data.result} />
+    ) : (
+      <Profile profile={data.result} />
+    )
+  },
 })
