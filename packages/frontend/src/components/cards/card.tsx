@@ -1,7 +1,6 @@
 import { CalendarDaysIcon, DollarSign, Eye, Users } from 'lucide-react'
 
 import { motion } from 'motion/react'
-import CameraCampaign from '../../../assets/camera-campaign-card.png'
 
 import { Button } from '../buttons/button'
 import type { HTMLMotionProps } from 'motion/react'
@@ -22,6 +21,8 @@ export type CampaignCardData = {
   logo: string
   status: string
   deadline: string
+  brandName: string
+  brandLogo: string
 }
 
 export function Card({
@@ -48,7 +49,10 @@ export function CampaignCard({
   className,
   children,
   ...props
-}: HTMLMotionProps<'div'> & { data: CampaignCardData }) {
+}: HTMLMotionProps<'div'> & {
+  data: CampaignCardData
+  buttonChild: React.ReactNode
+}) {
   return (
     <motion.div
       animate={flipCard}
@@ -72,11 +76,11 @@ export function CampaignCard({
         id="content"
         className="absolute bottom-2 w-[95%] h-[200px] rounded-4xl left-2"
       >
-        <div className="w-full h-full bg-green-50 rounded-4xl p-2 flex gap-4">
+        <div className="w-full h-full bg-surface-1 shadow-md border rounded-4xl p-2 flex gap-4">
           {/* LEFT CONTENT  */}
           <div className="w-[92px] h-4/5  rounded-l-4xl  mt-8">
             <div className="font-bold text-muted-foreground text-lg ml-1">
-              Chimera
+              {props.data.brandName}
             </div>
 
             <div className="*:data-[slot=avatar]:ring-background flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:grayscale absolute">
@@ -110,7 +114,7 @@ export function CampaignCard({
           {/* RIGHT CONTENT  */}
           <div
             id="child-content"
-            className="w-full rounded-r-4xl px-2 text-[9px] text-muted-foreground "
+            className="w-full rounded-r-4xl px-2 text-[9px] text-muted-foreground flex flex-col"
           >
             <div id="title" className="text-[11px] font-semibold text-black">
               {props.data.title}
@@ -125,37 +129,13 @@ export function CampaignCard({
             >
               <div className="flex items-center">
                 <DollarSign className="w-3 h-3" />
-                {props.data.price}
-              </div>
-              <div className="flex gap-[2px]">
-                <CalendarDaysIcon className="w-3 h-3" />
-                45 Days
+                {+props.data.price / 10 ** 6} USDC
               </div>
             </div>
 
-            <div
-              id="line-2"
-              className="w-full h-4 mt-2 flex justify-between items-center"
-            >
-              <div className="flex items-center gap-[2px]">
-                <Eye className="w-3 h-3" />
-                {props.data.engagement}
-              </div>
-              <div className="flex gap-1">
-                <Users className="w-3 h-3" />
-                <span>{props.data.applications}</span> Applied
-              </div>
+            <div className="mt-auto text-base ml-auto mb-3">
+              {props.buttonChild}
             </div>
-
-            <div id="requirements" className="mt-2">
-              Requirements: <span>{props.data.requirements}</span>
-            </div>
-
-            <div id="deadline" className="mt-1">
-              Deadline: <span>{props.data.deadline}</span>
-            </div>
-
-            <Button className="mt-1 rounded-full text-[9px]">Apply Now</Button>
           </div>
         </div>
       </div>
@@ -165,7 +145,7 @@ export function CampaignCard({
         className="absolute rounded-full bottom-40 left-2"
       >
         <img
-          src={CameraCampaign}
+          src={props.data.brandLogo}
           className="w-[90px] h-[90px] rounded-full border-2 border-muted-foreground/5 bg-green-50 shadow-2xl shadow-muted-foreground/20"
         />
       </div>
