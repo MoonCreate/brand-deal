@@ -1,13 +1,10 @@
-import { motion } from 'motion/react'
 import { Button } from '@/components/buttons/button'
 import { CampaignCard, ProfileCard } from '@/components/cards/card'
-import { DropZone } from '@/components/inputs/dropzone'
 import { SplitPopAnimation } from '@/components/text/split-pop-animation'
-import { pulseScale } from '@/lib/animation-const'
 
-export const CampaignSubmissionContent = () => {
+export const CampaignApprovalContent = () => {
   return (
-    <div className="w-full min-h-full my-10 flex flex-col grow relative">
+    <div className="w-full min-h-full flex flex-col grow relative my-10 ">
       <div
         id="campaign-submission-content"
         className="w-full grow flex relative"
@@ -24,20 +21,20 @@ export const CampaignSubmissionContent = () => {
           </div>
         </div>
         <ProfileCard className="flex-1 rounded-3xl overflow-hidden z-10 relative">
-          <div className="font-karantina text-[3rem] text-center mt-10  absolute z-30 right-1/2 translate-x-1/2 text-white">
+          <div className="font-karantina text-[3rem] text-center mt-10  absolute z-30 right-1/2 translate-x-1/2 text-white bg-black/20 px-3 rounded-2xl ">
             <SplitPopAnimation text="Campaign" />{' '}
-            <SplitPopAnimation text="Submission" />
+            <SplitPopAnimation text="Approve" />
           </div>
-          <motion.div
-            animate={pulseScale}
-            className="absolute w-full z-10 h-full"
-          >
-            <DropZone wrapperClassName="w-full h-full bg-primary rounded-3xl" />
-          </motion.div>
+          <div className="absolute w-full z-10 h-full">
+            <img
+              src="https://cdn.80.lv/api/upload/post/5392/images/5d2cf7f6876a8/widen_1220x0.jpg"
+              className="w-full h-full"
+            />
+          </div>
           <div className="w-full h-12 bottom-0 left-0 bg-black/20 z-40 absolute shadow-2xl"></div>
           <div className="w-10 h-full bottom-0  bg-secondary z-40 absolute right-0 shadow-2xl "></div>
-          <Button className="absolute bottom-0 right-0 z-40 h-12 w-20 flex justify-center shadow-2xl shadow-black">
-            Submit
+          <Button className="absolute bottom-0 right-0 z-40 h-12 w-20 flex justify-center shadow-2xl shadow-black hover:bg-black hover:text-white">
+            APPROVE
           </Button>
         </ProfileCard>
       </div>
