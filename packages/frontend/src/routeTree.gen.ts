@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+<<<<<<< HEAD
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as NewCampaignRouteImport } from './routes/new-campaign'
 import { Route as DashboardRouteImport } from './routes/dashboard'
@@ -32,11 +33,17 @@ const DashboardRoute = DashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+=======
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as DemoTanstackQueryRouteImport } from './routes/demo.tanstack-query'
+
+>>>>>>> main
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+<<<<<<< HEAD
 const CampaignIndexRoute = CampaignIndexRouteImport.update({
   id: '/campaign/',
   path: '/campaign/',
@@ -50,11 +57,17 @@ const CampaignSubmissionRoute = CampaignSubmissionRouteImport.update({
 const CampaignCreateRoute = CampaignCreateRouteImport.update({
   id: '/campaign/create',
   path: '/campaign/create',
+=======
+const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
+  id: '/demo/tanstack-query',
+  path: '/demo/tanstack-query',
+>>>>>>> main
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+<<<<<<< HEAD
   '/dashboard': typeof DashboardRoute
   '/new-campaign': typeof NewCampaignRoute
   '/profile': typeof ProfileRoute
@@ -70,10 +83,18 @@ export interface FileRoutesByTo {
   '/campaign/create': typeof CampaignCreateRoute
   '/campaign/submission': typeof CampaignSubmissionRoute
   '/campaign': typeof CampaignIndexRoute
+=======
+  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+}
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+>>>>>>> main
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+<<<<<<< HEAD
   '/dashboard': typeof DashboardRoute
   '/new-campaign': typeof NewCampaignRoute
   '/profile': typeof ProfileRoute
@@ -109,20 +130,35 @@ export interface FileRouteTypes {
     | '/campaign/create'
     | '/campaign/submission'
     | '/campaign/'
+=======
+  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/demo/tanstack-query'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/demo/tanstack-query'
+  id: '__root__' | '/' | '/demo/tanstack-query'
+>>>>>>> main
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+<<<<<<< HEAD
   DashboardRoute: typeof DashboardRoute
   NewCampaignRoute: typeof NewCampaignRoute
   ProfileRoute: typeof ProfileRoute
   CampaignCreateRoute: typeof CampaignCreateRoute
   CampaignSubmissionRoute: typeof CampaignSubmissionRoute
   CampaignIndexRoute: typeof CampaignIndexRoute
+=======
+  DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+>>>>>>> main
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+<<<<<<< HEAD
     '/profile': {
       id: '/profile'
       path: '/profile'
@@ -144,6 +180,8 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+=======
+>>>>>>> main
     '/': {
       id: '/'
       path: '/'
@@ -151,6 +189,7 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+<<<<<<< HEAD
     '/campaign/': {
       id: '/campaign/'
       path: '/campaign'
@@ -170,6 +209,13 @@ declare module '@tanstack/react-router' {
       path: '/campaign/create'
       fullPath: '/campaign/create'
       preLoaderRoute: typeof CampaignCreateRouteImport
+=======
+    '/demo/tanstack-query': {
+      id: '/demo/tanstack-query'
+      path: '/demo/tanstack-query'
+      fullPath: '/demo/tanstack-query'
+      preLoaderRoute: typeof DemoTanstackQueryRouteImport
+>>>>>>> main
       parentRoute: typeof rootRouteImport
     }
   }
@@ -177,12 +223,16 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+<<<<<<< HEAD
   DashboardRoute: DashboardRoute,
   NewCampaignRoute: NewCampaignRoute,
   ProfileRoute: ProfileRoute,
   CampaignCreateRoute: CampaignCreateRoute,
   CampaignSubmissionRoute: CampaignSubmissionRoute,
   CampaignIndexRoute: CampaignIndexRoute,
+=======
+  DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+>>>>>>> main
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
