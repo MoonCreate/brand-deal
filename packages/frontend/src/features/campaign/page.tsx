@@ -53,7 +53,7 @@ function CampaignList() {
       ></motion.div>
     </div>
   ) : (
-    <div className="flex">
+    <div className="flex gap-5">
       {processedData?.map((x, i) => (
         <CampaignCard
           className="max-w-[289px]"
