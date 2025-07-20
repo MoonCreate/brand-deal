@@ -1,28 +1,26 @@
+import { useWriteContract } from 'wagmi'
+import { brandDealAddress } from '@/integrations/contract'
+import { brandDealContractABI } from '@/integrations/contract/abis/brand-deal-abi'
+import { backend } from '@/integrations/hono-api'
 import { useMutation } from '@tanstack/react-query'
-import toast from 'react-hot-toast'
 
-// TODO: Replace with actual API call
+type RegisterBrandDto = Parameters<
+  typeof backend.api.register.brand.$post
+>[0]['json']
 export function useRegisterBrand() {
-  return useMutation({
-    mutationFn: async (dto: unknown) => {
-      await new Promise((resolve, reject) =>
-        window.setTimeout(() => {
-          Math.random() > 0.5 ? resolve('Lucky') : reject('Bad Luck')
-        }, 1_000 * 5),
-      )
-    },
-
-    onMutate: () => {
-      toast.loading('Registering brand...', { id: 'register-brand' })
-    },
-    onSuccess: () => {
-      toast.success('Successfully registered brand', {
-        id: 'register-brand',
+  const { writeContractAsync, ...restContracts } = useWriteContract()
+  const { mutation } = useMutation({
+    mutationKey: ['registerBrand'],
+    mutationFn: async (dto: RegisterBrandDto) => {
+      const metadata = await (
+        await backend.api.register.brand.$post({ json: dto })
+      ).json()
+      writeContractAsync({
+        abi: brandDealContractABI,
+        address: brandDealAddress,
+        functionName: 'registerBrand',
+        args: [dto.name, metadata.cid, dto.nib],
       })
-    },
-
-    onError: () => {
-      toast.error('Failed to register brand', { id: 'register-brand' })
     },
   })
 }
