@@ -10,18 +10,18 @@ import { cn } from '@/lib/utils'
 import { flipCard } from '@/lib/animation-const'
 
 export type CampaignCardData = {
-    label: string;
-    title: string;
-    description: string;
-    price: string;
-    category: string;
-    requirements: string;
-    engagement: string;
-    applications: string;
-    image: string;
-    logo: string;
-    status: string;
-    deadline: string;
+  label: string
+  title: string
+  description: string
+  price: string
+  category: string
+  requirements: string
+  engagement: string
+  applications: string
+  image: string
+  logo: string
+  status: string
+  deadline: string
 }
 
 export function Card({
@@ -53,14 +53,12 @@ export function CampaignCard({
     <motion.div
       animate={flipCard}
       whileHover={{ scale: 1.05 }}
-      className="w-full h-[450px]  rounded-4xl relative border"
+      className={cn('w-full h-[450px]  rounded-4xl relative border', className)}
       id="campaign-card"
       {...props}
     >
       <img
-        src={
-          props.data.image
-        }
+        src={props.data.image}
         className="rounded-4xl w-full h-full border-2 border-muted-foreground/40"
       />
       <div
@@ -104,7 +102,7 @@ export function CampaignCard({
                 <AvatarFallback>ER</AvatarFallback>
               </Avatar>
               <div className="bg-muted-foreground text-white text-[10px] h-fit z-10 px-2 rounded-md -bottom-2 absolute -right-2 shadow-lg shadow-pink-200">
-                45+
+                {props.data.applications}
               </div>
             </div>
           </div>

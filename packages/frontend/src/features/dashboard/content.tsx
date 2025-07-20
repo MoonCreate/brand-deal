@@ -1,32 +1,17 @@
 import { Bookmark, Globe, Link, Mail } from 'lucide-react'
 import { useNavigate } from '@tanstack/react-router'
+import { motion } from 'motion/react'
+import { useMemo } from 'react'
 import {
-  CampaignCard,
-  type CampaignCardData,
+  CampaignCard
+  
 } from '../../components/cards/card'
+import type {CampaignCardData} from '../../components/cards/card';
 import type { Brand } from '@/types'
 import { Button } from '@/components/buttons/button'
 import { SocialCard } from '@/components/cards/social-card'
 import { useGetCampaigns } from '@/hooks/use-get-campaign'
-import { motion } from 'motion/react'
 import { bop } from '@/lib/animation-const'
-import { useMemo } from 'react'
-
-const CAMPAIGN_DUMMY_DATA = {
-  label: 'Soon',
-  title: 'iPhone 15 Pro Creator',
-  description:
-    'Create stunning content show casing iPhone 15 Pro camera capabilities',
-  price: '75,000',
-  category: 'Technology',
-  requirements: '5M+ followers',
-  engagement: '6.8M',
-  applications: '156',
-  image: '',
-  logo: 'https://preview-campaign-page-design-kzmp654mayrizwzafer0.vusercontent.net/placeholder.svg?height=60&width=60',
-  status: 'Active',
-  deadline: 'Dec 15, 2024',
-}
 
 function CampaignList() {
   const { data, isLoading } = useGetCampaigns()
@@ -45,7 +30,7 @@ function CampaignList() {
             applications: item.creatorPools.items.length + "",
             image: item.metadata?.image,
             logo: item.brand.metadata?.image,
-            status: item.status,
+            status: item.status!,
             engagement: item.metadata.engagment,
             deadline: item.metadata?.deadline,
           }) satisfies CampaignCardData,

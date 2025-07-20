@@ -1,8 +1,64 @@
 import { Facebook, Instagram, Twitter } from 'lucide-react'
 import { motion } from 'motion/react'
+import { useMemo } from 'react'
 import type { Creator } from '@/types'
+import type { CampaignCardData } from '@/components/cards/card'
 import { CampaignCard, ProfileCard } from '@/components/cards/card'
-import { pulseScale } from '@/lib/animation-const'
+import { bop, pulseScale } from '@/lib/animation-const'
+import { useGetCampaigns } from '@/hooks/use-get-campaign'
+import { useAccount } from 'wagmi'
+
+function CampaignList() {
+  const account = useAccount()
+  const { data, isLoading } = useGetCampaigns({
+    creator: account.address,
+  })
+
+  const processedData = useMemo(
+    () =>
+      data?.campaigns.items.map(
+        (item) =>
+          ({
+            label: item.status ?? '',
+            title: item.metadata?.name,
+            description: item.metadata?.description,
+            price: item.stakedAmount!,
+            category: 'Technology',
+            requirements: item.metadata?.requirements,
+            applications: item.creatorPools.items.length + '',
+            image: item.metadata?.image,
+            logo: item.brand.metadata?.image,
+            status: item.status!,
+            engagement: item.metadata.engagment,
+            deadline: item.metadata?.deadline,
+          }) satisfies CampaignCardData,
+      ),
+    [data],
+  )
+
+  return isLoading ? (
+    <div className="flex flex-1 gap-3 mt-3">
+      <motion.div
+        animate={bop}
+        className="w-[289px] h-[448px] rounded-xl bg-gray-500 animate-pulse"
+      ></motion.div>
+      <motion.div
+        animate={bop}
+        className="w-[289px] h-[448px] rounded-xl bg-gray-500 animate-pulse"
+      ></motion.div>
+      <motion.div
+        animate={bop}
+        className="w-[289px] h-[448px] rounded-xl bg-gray-500 animate-pulse"
+      ></motion.div>
+    </div>
+  ) : (
+    <div className="grid relative z-10 grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-5">
+      {processedData?.map((x, i) => (
+        <CampaignCard key={i} data={x as never} />
+      ))}
+    </div>
+  )
+}
 
 export const Profile = (props: { profile: Creator }) => {
   return (
@@ -16,7 +72,7 @@ export const Profile = (props: { profile: Creator }) => {
           >
             <div className="relative rounded-xl w-full h-full overflow-hidden bg-white">
               <img
-                src="https://hasagi.gg/wp-content/uploads/2024/04/Youtube-Stuff-1.png"
+                src={props.profile.metadata.image}
                 alt="Profile"
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
               />
@@ -25,12 +81,11 @@ export const Profile = (props: { profile: Creator }) => {
         </div>
 
         <ProfileCard position="top-right">
-          <div className="px-4 pt-4 text-4xl">BRYAN DEWA WICAKSANA</div>
+          <div className="px-4 pt-4 text-4xl">
+            {props.profile.metadata.name}
+          </div>
           <div id="profile-description" className="text-xl px-4 text-black/80">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Error
-            assumenda pariatur deleniti aperiam suscipit nihil incidunt
-            inventore nulla eligendi blanditiis totam quod fugit, molestias
-            harum et possimus consectetur molestiae officiis!
+            {props.profile.metadata.description}
           </div>
 
           <div className="flex gap-4 absolute right-4 bottom-3 w-full pl-7 items-center">
@@ -53,13 +108,7 @@ export const Profile = (props: { profile: Creator }) => {
         >
           Campaign
         </div>
-
-        {/* GRID CONTENT */}
-        <div className="grid relative z-10 grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-5">
-          <CampaignCard />
-          <CampaignCard />
-          <CampaignCard />
-        </div>
+        <CampaignList />
       </div>
     </main>
   )

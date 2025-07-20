@@ -426,7 +426,7 @@ type Declaration = `
 
 type Scalars = {
   BigInt: `${number}`
-  JSON: any 
+  JSON: any
   BrandMetadata: Brand['metadata']
 }
 export const mobius = new Mobius<Declaration, Scalars>({
@@ -435,8 +435,8 @@ export const mobius = new Mobius<Declaration, Scalars>({
 
 type Klein = NonNullable<typeof mobius.klein>
 
-// @ts-expect-error its so deep it reaches the deep heart
 export const useMobiusQuery = <
+  // @ts-expect-error its so deep it reaches the deep heart
   TQuery extends Selective<CreateQuery<Klein['Query']>>,
 >(
   query: TQuery,
