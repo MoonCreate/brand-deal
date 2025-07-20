@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import type { Address } from 'viem'
 import { mobius } from '@/integrations/hono-graphql'
 
-export function useGetCampaigns(props: { creator?: Address; brand?: Address }) {
+export function useGetCampaigns(props: { creator?: Address; brand?: Address } = {}) {
   return useQuery({
     queryKey: ['campaigns', props],
     queryFn: async () => {

@@ -6,12 +6,11 @@ import type { CampaignCardData } from '@/components/cards/card'
 import { CampaignCard, ProfileCard } from '@/components/cards/card'
 import { bop, pulseScale } from '@/lib/animation-const'
 import { useGetCampaigns } from '@/hooks/use-get-campaign'
-import { useAccount } from 'wagmi'
+import { Button } from '@/components/buttons/button'
 
 function CampaignList() {
-  const account = useAccount()
   const { data, isLoading } = useGetCampaigns({
-    creator: account.address,
+    // creator: account.address,
   })
 
   const processedData = useMemo(
@@ -31,6 +30,8 @@ function CampaignList() {
             status: item.status!,
             engagement: item.metadata.engagment,
             deadline: item.metadata?.deadline,
+            brandLogo: item.brand.metadata.image,
+            brandName: item.brand.metadata.name,
           }) satisfies CampaignCardData,
       ),
     [data],
@@ -54,7 +55,12 @@ function CampaignList() {
   ) : (
     <div className="grid relative z-10 grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-5">
       {processedData?.map((x, i) => (
-        <CampaignCard key={i} data={x as never} />
+        <CampaignCard
+          className="max-w-[280px]"
+          key={i}
+          data={x as never}
+          buttonChild={<Button>Withdraw</Button>}
+        />
       ))}
     </div>
   )

@@ -33,6 +33,8 @@ function CampaignList() {
             status: item.status!,
             engagement: item.metadata.engagment,
             deadline: item.metadata?.deadline,
+            brandLogo: item.brand.metadata.image,
+            brandName: item.brand.metadata.name
           }) satisfies CampaignCardData,
       ),
     [data],
@@ -56,7 +58,9 @@ function CampaignList() {
   ) : (
     <div className="flex flex-1 gap-3 mt-3">
       {processedData?.map((x, i) => (
-        <CampaignCard key={i} data={x as never} />
+        <CampaignCard className='max-w-[280px]' key={i} data={x as never} buttonChild={
+          <Button>Review</Button>
+        } />
       ))}
     </div>
   )
