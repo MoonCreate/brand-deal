@@ -1,9 +1,9 @@
 import { useConnectModal, useProfileModal, useChainModal } from '@xellar/kit'
 import { useAccount } from 'wagmi'
 import { LucideLink, LucideUser, LucideWallet } from 'lucide-react'
+import { Button } from './button'
 import type { Config, UseAccountReturnType } from 'wagmi'
 import { cn } from '@/lib/utils'
-import { Button } from './button'
 
 export function ConnectButton() {
   const account = useAccount()

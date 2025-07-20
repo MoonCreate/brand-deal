@@ -9,11 +9,24 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as NewCampaignRouteImport } from './routes/new-campaign'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CampaignIndexRouteImport } from './routes/campaign/index'
+import { Route as CampaignSubmissionRouteImport } from './routes/campaign/submission'
 import { Route as CampaignCreateRouteImport } from './routes/campaign/create'
 
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewCampaignRoute = NewCampaignRouteImport.update({
+  id: '/new-campaign',
+  path: '/new-campaign',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -29,6 +42,11 @@ const CampaignIndexRoute = CampaignIndexRouteImport.update({
   path: '/campaign/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CampaignSubmissionRoute = CampaignSubmissionRouteImport.update({
+  id: '/campaign/submission',
+  path: '/campaign/submission',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CampaignCreateRoute = CampaignCreateRouteImport.update({
   id: '/campaign/create',
   path: '/campaign/create',
@@ -38,39 +56,87 @@ const CampaignCreateRoute = CampaignCreateRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/new-campaign': typeof NewCampaignRoute
+  '/profile': typeof ProfileRoute
   '/campaign/create': typeof CampaignCreateRoute
+  '/campaign/submission': typeof CampaignSubmissionRoute
   '/campaign': typeof CampaignIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/new-campaign': typeof NewCampaignRoute
+  '/profile': typeof ProfileRoute
   '/campaign/create': typeof CampaignCreateRoute
+  '/campaign/submission': typeof CampaignSubmissionRoute
   '/campaign': typeof CampaignIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/new-campaign': typeof NewCampaignRoute
+  '/profile': typeof ProfileRoute
   '/campaign/create': typeof CampaignCreateRoute
+  '/campaign/submission': typeof CampaignSubmissionRoute
   '/campaign/': typeof CampaignIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/campaign/create' | '/campaign'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/new-campaign'
+    | '/profile'
+    | '/campaign/create'
+    | '/campaign/submission'
+    | '/campaign'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/campaign/create' | '/campaign'
-  id: '__root__' | '/' | '/dashboard' | '/campaign/create' | '/campaign/'
+  to:
+    | '/'
+    | '/dashboard'
+    | '/new-campaign'
+    | '/profile'
+    | '/campaign/create'
+    | '/campaign/submission'
+    | '/campaign'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard'
+    | '/new-campaign'
+    | '/profile'
+    | '/campaign/create'
+    | '/campaign/submission'
+    | '/campaign/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRoute: typeof DashboardRoute
+  NewCampaignRoute: typeof NewCampaignRoute
+  ProfileRoute: typeof ProfileRoute
   CampaignCreateRoute: typeof CampaignCreateRoute
+  CampaignSubmissionRoute: typeof CampaignSubmissionRoute
   CampaignIndexRoute: typeof CampaignIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/new-campaign': {
+      id: '/new-campaign'
+      path: '/new-campaign'
+      fullPath: '/new-campaign'
+      preLoaderRoute: typeof NewCampaignRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
@@ -92,6 +158,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CampaignIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/campaign/submission': {
+      id: '/campaign/submission'
+      path: '/campaign/submission'
+      fullPath: '/campaign/submission'
+      preLoaderRoute: typeof CampaignSubmissionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/campaign/create': {
       id: '/campaign/create'
       path: '/campaign/create'
@@ -105,7 +178,10 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRoute: DashboardRoute,
+  NewCampaignRoute: NewCampaignRoute,
+  ProfileRoute: ProfileRoute,
   CampaignCreateRoute: CampaignCreateRoute,
+  CampaignSubmissionRoute: CampaignSubmissionRoute,
   CampaignIndexRoute: CampaignIndexRoute,
 }
 export const routeTree = rootRouteImport
