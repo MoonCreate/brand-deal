@@ -2,7 +2,9 @@ import { useQuery } from '@tanstack/react-query'
 import type { Address } from 'viem'
 import { mobius } from '@/integrations/hono-graphql'
 
-export function useGetCampaigns(props: { creator?: Address; brand?: Address } = {}) {
+export function useGetCampaigns(
+  props: { creator?: Address; brand?: Address } = {},
+) {
   return useQuery({
     queryKey: ['campaigns', props],
     queryFn: async () => {
@@ -33,15 +35,20 @@ export function useGetCampaigns(props: { creator?: Address; brand?: Address } = 
       })
 
       if (props.brand && result) {
-        result.campaigns.items = result.campaigns.items.filter(
-          (item) => item.brandWalletAddress === props.brand,
-        )
+        result.campaigns.items = result.campaigns.items.filter((item) => {
+          return (
+            item.brandWalletAddress?.toLowerCase() ===
+            props.brand?.toLowerCase()
+          )
+        })
       }
 
       if (props.creator && result) {
         result.campaigns.items = result.campaigns.items.filter((item) =>
           item.creatorPools.items.some(
-            (pool) => pool.creatorWalletAddress === props.creator,
+            (pool) =>
+              pool.creatorWalletAddress?.toLowerCase() ===
+              props.creator?.toLowerCase(),
           ),
         )
       }

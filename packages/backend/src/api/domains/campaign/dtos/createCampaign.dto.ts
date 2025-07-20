@@ -5,6 +5,6 @@ export const createCampaign = z.object({
   image: z.instanceof(File),
   description: z.string(),
   brandName: z.string(),
-  deadline: z.date(),
+  deadline: z.coerce.date(),
   valueStaked: z.string(),
 });

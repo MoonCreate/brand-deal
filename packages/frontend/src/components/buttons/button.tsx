@@ -9,7 +9,8 @@ export function getButtonStyle(variant: Variant = 'default') {
     'flex items-center gap-2 hover:bg-primary/70 active:scale-95 transition-transform ease-out',
     'disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100',
     'hover:cursor-pointer',
-    variant === "outline" && "bg-transparent border text-black hover:bg-black/5 font-normal"
+    variant === 'outline' &&
+      'bg-transparent border text-black hover:bg-black/5 font-normal',
   )
 }
 
@@ -19,13 +20,15 @@ export function Button({
   isLoading,
   disabled,
   variant,
+  type = 'button',
   ...props
 }: React.ComponentProps<'button'> & {
-  isLoading?: boolean,
+  isLoading?: boolean
   variant?: Variant
 }) {
   return (
     <button
+      type={type}
       disabled={disabled || isLoading}
       className={cn(getButtonStyle(variant), className)}
       {...props}
