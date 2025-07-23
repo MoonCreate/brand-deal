@@ -17,7 +17,7 @@ export const CampaignApproveContent = () => {
             >
               Campaign
             </div>
-            <CampaignCard />
+            {/* <CampaignCard /> */}
           </div>
         </div>
         <ProfileCard className="flex-1 rounded-3xl overflow-hidden z-10 relative">

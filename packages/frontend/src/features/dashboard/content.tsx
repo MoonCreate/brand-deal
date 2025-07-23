@@ -1,15 +1,15 @@
-import { Bookmark, Globe, Link, Mail } from 'lucide-react'
-import { useNavigate } from '@tanstack/react-router'
+import { Bookmark, Globe, LucideLink, Mail } from 'lucide-react'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { motion } from 'motion/react'
 import { useMemo } from 'react'
+import { useAccount } from 'wagmi'
 import { CampaignCard } from '../../components/cards/card'
 import type { CampaignCardData } from '../../components/cards/card'
 import type { Brand } from '@/types'
-import { Button } from '@/components/buttons/button'
+import { Button, getButtonStyle } from '@/components/buttons/button'
 import { SocialCard } from '@/components/cards/social-card'
 import { useGetCampaigns } from '@/hooks/use-get-campaign'
 import { bop } from '@/lib/animation-const'
-import { useAccount } from 'wagmi'
 
 function CampaignList() {
   const account = useAccount()
@@ -22,6 +22,8 @@ function CampaignList() {
       data?.campaigns.items.map(
         (item) =>
           ({
+            // @ts-ignore
+            id: item.campaignNFTId,
             label: item.status ?? '',
             title: item.metadata?.name,
             description: item.metadata?.description,
@@ -63,7 +65,15 @@ function CampaignList() {
           className="max-w-[280px]"
           key={i}
           data={x as never}
-          buttonChild={<Button>Review</Button>}
+          buttonChild={
+            <Link
+              className={getButtonStyle('default')}
+              to={`/campaign/approval/$id`}
+              params={{ id: x.id }}
+            >
+              Review
+            </Link>
+          }
         />
       ))}
     </div>
@@ -115,7 +125,7 @@ export const DashboardContent = (props: { brand: Brand }) => {
             </div>
             <div id="social" className="flex gap-2 flex-col mt-6">
               <div className="flex gap-2 items-center font-bold">
-                <Link className="w-4 h-4" /> Social Links
+                <LucideLink className="w-4 h-4" /> Social Links
               </div>
               <div className="">
                 <SocialCard social={props.brand.metadata.attributes[4].value} />
