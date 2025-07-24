@@ -19,7 +19,10 @@ export const config = {
 const hql = graphql({ db, schema });
 
 const app = new Hono<{ Bindings: Bindings }>()
-  .use(cors())
+  .use(cors({
+    origin: "*",
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  }))
   .use("/graphql", hql)
   .basePath("/api")
   .route("/home", homeController)
