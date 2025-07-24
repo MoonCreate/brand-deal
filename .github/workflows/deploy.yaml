@@ -2,7 +2,7 @@ name: Deploy Indexer To VPS
 
 on:
   push:
-    branches: [main]  # or your deploy branch
+    branches: [main] # or your deploy branch
 
 jobs:
   deploy:
@@ -19,6 +19,6 @@ jobs:
       - name: Deploy via SSH
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
-            cd ~/projects
+            cd ~/projects/brand-deal
             git pull
           EOF
