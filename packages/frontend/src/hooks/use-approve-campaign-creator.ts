@@ -1,11 +1,11 @@
-import { createBlockExplorerLink } from '@/lib/utils'
 import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { useConfig, useWriteContract } from 'wagmi'
 import { waitForTransactionReceipt } from '@wagmi/core'
-import { brandDealContractABI } from '@/integrations/contract/abis/brand-deal-abi'
-import { brandDealAddress } from '@/integrations/contract'
 import type { Address } from 'viem'
+import { createBlockExplorerLink } from '@/lib/utils'
+import { brandDealAddress } from '@/integrations/contract'
+import { brandDealContractABI } from '@/integrations/contract/abis/brand-deal-abi'
 
 export function useApproveCampaignCreator() {
   const config = useConfig()

@@ -2,6 +2,8 @@ import { LucideArrowUp, LucidePlus } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { motion } from 'motion/react'
 import { Fragment, useState } from 'react'
+import { useAccount } from 'wagmi'
+import { useNavigate } from '@tanstack/react-router'
 import { DropZone } from '../inputs/dropzone'
 import { Button } from '../buttons/button'
 import { SplitPopAnimation } from '../text/split-pop-animation'
@@ -10,9 +12,6 @@ import { dialogInjection } from '@/injection/dialog-injection'
 import { cn } from '@/lib/utils'
 import { bop } from '@/lib/animation-const'
 import { useRegistercreator } from '@/hooks/use-register-creator'
-import { darwinia } from 'viem/chains'
-import { useAccount } from 'wagmi'
-import type { Address } from 'viem'
 
 type RegisterCreatorDto = {
   publicName: string
@@ -33,6 +32,7 @@ export function RegisterAsContentCreatorDialog() {
   const form = useForm<RegisterCreatorDto>()
   const [socialLength, setSocialLength] = useState(1)
   const account = useAccount()
+  const navigate = useNavigate()
 
   return (
     <form
@@ -46,11 +46,13 @@ export function RegisterAsContentCreatorDialog() {
             image: data.photoProfile,
             locationAddress: data.locationAddress,
             socialLinks: JSON.stringify(data.socialLink),
-            walletAddress: account.address as Address,
+            walletAddress: account.address,
           },
           {
             onSuccess: async () => {
               await dialog.close()
+              await dialog.close()
+              navigate({ to: '/dashboard' })
             },
           },
         )
