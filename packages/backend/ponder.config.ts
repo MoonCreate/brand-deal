@@ -47,7 +47,7 @@ export default createConfig({
     ChainlinkOracleUpdate: {
       chain: "liskTestnet",
       interval: 10, // Every 10 blocks
-      startBlock: 1000,
+      startBlock: 23681094,
     },
   },
 });
