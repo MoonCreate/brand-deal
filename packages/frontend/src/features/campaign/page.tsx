@@ -33,8 +33,13 @@ function CampaignList() {
         deadline: item.metadata?.deadline,
         brandLogo: item.brand.metadata.image,
         brandName: item.brand.metadata.name,
+        isUserApplied: item.creatorPools.items.some(
+          (i) =>
+            i.creatorWalletAddress?.toLowerCase() ==
+            account.address?.toLowerCase(),
+        ),
       })),
-    [data],
+    [data, account.address],
   )
 
   return isLoading ? (
@@ -61,14 +66,18 @@ function CampaignList() {
           data={x as never}
           buttonChild={
             account.address ? (
-              <Button
-                onClick={() => {
-                  mutate(x.id)
-                }}
-                isLoading={isPending}
-              >
-                Apply Now
-              </Button>
+              x.isUserApplied ? (
+                <Button disabled>In Review</Button>
+              ) : (
+                <Button
+                  onClick={() => {
+                    mutate(x.id)
+                  }}
+                  isLoading={isPending}
+                >
+                  Apply Now
+                </Button>
+              )
             ) : (
               <ConnectButton />
             )

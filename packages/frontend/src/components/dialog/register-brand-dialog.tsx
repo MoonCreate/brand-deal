@@ -3,14 +3,15 @@ import { LucideArrowUp, LucidePlus } from 'lucide-react'
 import { motion } from 'motion/react'
 import { Fragment, useState } from 'react'
 import { useAccount } from 'wagmi'
+import { useNavigate } from '@tanstack/react-router'
 import { Button } from '../buttons/button'
 import { DropZone } from '../inputs/dropzone'
 import { SplitPopAnimation } from '../text/split-pop-animation'
+import { SocialLinkDropdown } from '../dropdown/sociallink-dropdown'
 import { useRegisterBrand } from '@/hooks/use-register-brand'
 import { dialogInjection } from '@/injection/dialog-injection'
 import { cn } from '@/lib/utils'
 import { bop } from '@/lib/animation-const'
-import { SocialLinkDropdown } from '../dropdown/sociallink-dropdown'
 
 type RegisterBrandDto = {
   instanceName: string
@@ -28,6 +29,7 @@ export function RegisterAsBrandDialog() {
   const form = useForm<RegisterBrandDto>()
   const account = useAccount()
   const [socialLength, setSocialLength] = useState(1)
+  const navigate = useNavigate()
 
   return (
     <form
@@ -47,6 +49,8 @@ export function RegisterAsBrandDialog() {
           {
             onSuccess: async () => {
               await dialog.close()
+              await dialog.close()
+              navigate({ to: '/dashboard' })
             },
           },
         )
