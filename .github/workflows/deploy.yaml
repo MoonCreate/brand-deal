@@ -2,7 +2,7 @@ name: Deploy Indexer To VPS
 
 on:
   push:
-    branches: [main] # or your deploy branch
+    branches: [main]  # or your deploy branch
 
 jobs:
   deploy:
