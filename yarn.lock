@@ -15451,6 +15451,7 @@ __metadata:
     vitest: "npm:^3.0.5"
     wagmi: "npm:^2.15.6"
     web-vitals: "npm:^4.2.4"
+    ~backend: "workspace:*"
   languageName: unknown
   linkType: soft
 
