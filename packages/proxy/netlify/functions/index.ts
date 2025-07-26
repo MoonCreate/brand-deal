@@ -20,15 +20,21 @@ async function proxy(request: Request, context: Context) {
     });
   }
 
+
+  const body = unbodyMethods.includes(request.method)
+    ? undefined
+    : request.body;
+
   const response = await fetch(endpoint + url.pathname, {
     method: request.method,
     headers: request.headers,
-    body: unbodyMethods.includes(request.method) ? undefined : request.body,
+    body: body,
+    duplex: "half",
   });
 
-  const body = await response.text();
+  const responseBody = await response.text();
 
-  return new Response(body, {
+  return new Response(responseBody, {
     status: response.status,
     headers: {
       "Content-Type": response.headers.get("Content-Type") ?? "text/plain",
