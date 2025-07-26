@@ -9,3 +9,6 @@ to = "/.netlify/functions/index/:splat"
 
 [build]
 command = "echo 'Im building... hhahahahahhaah'"
+
+[build.environment]
+NETLIFY_SKIP_INSTALL = "true"
