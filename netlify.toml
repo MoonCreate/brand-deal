@@ -1,0 +1,11 @@
+[functions]
+node_bundler = "esbuild"
+
+[[redirects]]
+force = true
+from = "/*"
+status = 200
+to = "/.netlify/functions/index/:splat"
+
+[build]
+command = "echo 'Im building... hhahahahahhaah'"
