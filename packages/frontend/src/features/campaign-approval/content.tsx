@@ -1,20 +1,23 @@
 import { useLoaderData, useNavigate } from '@tanstack/react-router'
-import { Check, Facebook, Instagram, Twitter, X } from 'lucide-react'
+import { BookPlus, Check, Facebook, Instagram, Twitter, X } from 'lucide-react'
+import { motion } from 'motion/react'
 import type { Creator } from '@/types'
 import type { Address } from 'viem'
 import { Button } from '@/components/buttons/button'
 import { CampaignCard } from '@/components/cards/card'
 import { useApproveCampaignCreator } from '@/hooks/use-approve-campaign-creator'
+import { SocialCard } from '@/components/cards/social-card'
+import { bop } from '@/lib/animation-const'
 
 export const CampaignApprovalContent = () => {
   const [{ mutate, isPending }] = useApproveCampaignCreator()
   const item = useLoaderData({
     from: '/_no-layout/campaign/approval/$id',
-  }) as any
+  }) as any;
   const nav = useNavigate({ from: '/campaign/approval/$id' })
 
   const handleBackClick = () => {
-    nav({ to: '/campaign' })
+    nav({ to: '/dashboard' })
   }
 
   const handleCheckClick = (addr: Address) => mutate([item.campaignNFTId, addr])
@@ -70,7 +73,8 @@ export const CampaignApprovalContent = () => {
           {item.creatorPools.items.map((data) => {
             const creator = data.creator as Creator
             return (
-              <div
+              <motion.div
+                animate={bop}
                 key={data.creatorcreatorWalletAddress}
                 className="w-full bg-black/20 flex relative rounded-r-2xl rounded-l-full p-4 gap-6"
               >
@@ -80,9 +84,7 @@ export const CampaignApprovalContent = () => {
                     className="aspect-square z-29 object-cover size-full"
                   />
                   <div className="z-40 bg-green-30 w-full h-auto flex gap-4 py-3 bottom-0 bg-black/20 absolute  items-center justify-center">
-                    <Facebook className="text-white hover:cursor-pointer" />
-                    <Twitter className="text-white hover:cursor-pointer" />
-                    <Instagram className="text-white hover:cursor-pointer" />
+                    <SocialCard social={creator.metadata.attributes[3].value} />
                   </div>
                 </div>
                 <div className="flex flex-col mt-6">
@@ -95,6 +97,7 @@ export const CampaignApprovalContent = () => {
                 </div>
                 <div className=" ml-auto  flex gap-1 pb-7 self-end">
                   <Button
+                    isLoading={isPending}
                     onClick={() =>
                       handleCheckClick(creator.creatorWalletAddress)
                     }
@@ -108,7 +111,7 @@ export const CampaignApprovalContent = () => {
                   <div className="size-3 rounded-full bg-secondary"></div>
                   <div className="size-3 rounded-full bg-secondary"></div>
                 </div>
-              </div>
+              </motion.div>
             )
           })}
         </div>

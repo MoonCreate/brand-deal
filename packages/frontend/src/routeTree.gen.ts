@@ -15,9 +15,9 @@ import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
 import { Route as LayoutNewCampaignRouteImport } from './routes/_layout/new-campaign'
 import { Route as LayoutDashboardRouteImport } from './routes/_layout/dashboard'
 import { Route as LayoutCampaignIndexRouteImport } from './routes/_layout/campaign/index'
-import { Route as NoLayoutCampaignSubmissionRouteImport } from './routes/_no-layout/campaign/submission'
 import { Route as NoLayoutCampaignApproveRouteImport } from './routes/_no-layout/campaign/approve'
 import { Route as LayoutCampaignCreateRouteImport } from './routes/_layout/campaign/create'
+import { Route as NoLayoutCampaignSubmissionIdRouteImport } from './routes/_no-layout/campaign/submission.$id'
 import { Route as NoLayoutCampaignApprovalIdRouteImport } from './routes/_no-layout/campaign/approval.$id'
 
 const NoLayoutRoute = NoLayoutRouteImport.update({
@@ -48,12 +48,6 @@ const LayoutCampaignIndexRoute = LayoutCampaignIndexRouteImport.update({
   path: '/campaign/',
   getParentRoute: () => LayoutRoute,
 } as any)
-const NoLayoutCampaignSubmissionRoute =
-  NoLayoutCampaignSubmissionRouteImport.update({
-    id: '/campaign/submission',
-    path: '/campaign/submission',
-    getParentRoute: () => NoLayoutRoute,
-  } as any)
 const NoLayoutCampaignApproveRoute = NoLayoutCampaignApproveRouteImport.update({
   id: '/campaign/approve',
   path: '/campaign/approve',
@@ -64,6 +58,12 @@ const LayoutCampaignCreateRoute = LayoutCampaignCreateRouteImport.update({
   path: '/campaign/create',
   getParentRoute: () => LayoutRoute,
 } as any)
+const NoLayoutCampaignSubmissionIdRoute =
+  NoLayoutCampaignSubmissionIdRouteImport.update({
+    id: '/campaign/submission/$id',
+    path: '/campaign/submission/$id',
+    getParentRoute: () => NoLayoutRoute,
+  } as any)
 const NoLayoutCampaignApprovalIdRoute =
   NoLayoutCampaignApprovalIdRouteImport.update({
     id: '/campaign/approval/$id',
@@ -77,9 +77,9 @@ export interface FileRoutesByFullPath {
   '/': typeof LayoutIndexRoute
   '/campaign/create': typeof LayoutCampaignCreateRoute
   '/campaign/approve': typeof NoLayoutCampaignApproveRoute
-  '/campaign/submission': typeof NoLayoutCampaignSubmissionRoute
   '/campaign': typeof LayoutCampaignIndexRoute
   '/campaign/approval/$id': typeof NoLayoutCampaignApprovalIdRoute
+  '/campaign/submission/$id': typeof NoLayoutCampaignSubmissionIdRoute
 }
 export interface FileRoutesByTo {
   '/dashboard': typeof LayoutDashboardRoute
@@ -87,9 +87,9 @@ export interface FileRoutesByTo {
   '/': typeof LayoutIndexRoute
   '/campaign/create': typeof LayoutCampaignCreateRoute
   '/campaign/approve': typeof NoLayoutCampaignApproveRoute
-  '/campaign/submission': typeof NoLayoutCampaignSubmissionRoute
   '/campaign': typeof LayoutCampaignIndexRoute
   '/campaign/approval/$id': typeof NoLayoutCampaignApprovalIdRoute
+  '/campaign/submission/$id': typeof NoLayoutCampaignSubmissionIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -100,9 +100,9 @@ export interface FileRoutesById {
   '/_layout/': typeof LayoutIndexRoute
   '/_layout/campaign/create': typeof LayoutCampaignCreateRoute
   '/_no-layout/campaign/approve': typeof NoLayoutCampaignApproveRoute
-  '/_no-layout/campaign/submission': typeof NoLayoutCampaignSubmissionRoute
   '/_layout/campaign/': typeof LayoutCampaignIndexRoute
   '/_no-layout/campaign/approval/$id': typeof NoLayoutCampaignApprovalIdRoute
+  '/_no-layout/campaign/submission/$id': typeof NoLayoutCampaignSubmissionIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -112,9 +112,9 @@ export interface FileRouteTypes {
     | '/'
     | '/campaign/create'
     | '/campaign/approve'
-    | '/campaign/submission'
     | '/campaign'
     | '/campaign/approval/$id'
+    | '/campaign/submission/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/dashboard'
@@ -122,9 +122,9 @@ export interface FileRouteTypes {
     | '/'
     | '/campaign/create'
     | '/campaign/approve'
-    | '/campaign/submission'
     | '/campaign'
     | '/campaign/approval/$id'
+    | '/campaign/submission/$id'
   id:
     | '__root__'
     | '/_layout'
@@ -134,9 +134,9 @@ export interface FileRouteTypes {
     | '/_layout/'
     | '/_layout/campaign/create'
     | '/_no-layout/campaign/approve'
-    | '/_no-layout/campaign/submission'
     | '/_layout/campaign/'
     | '/_no-layout/campaign/approval/$id'
+    | '/_no-layout/campaign/submission/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -188,13 +188,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutCampaignIndexRouteImport
       parentRoute: typeof LayoutRoute
     }
-    '/_no-layout/campaign/submission': {
-      id: '/_no-layout/campaign/submission'
-      path: '/campaign/submission'
-      fullPath: '/campaign/submission'
-      preLoaderRoute: typeof NoLayoutCampaignSubmissionRouteImport
-      parentRoute: typeof NoLayoutRoute
-    }
     '/_no-layout/campaign/approve': {
       id: '/_no-layout/campaign/approve'
       path: '/campaign/approve'
@@ -208,6 +201,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/campaign/create'
       preLoaderRoute: typeof LayoutCampaignCreateRouteImport
       parentRoute: typeof LayoutRoute
+    }
+    '/_no-layout/campaign/submission/$id': {
+      id: '/_no-layout/campaign/submission/$id'
+      path: '/campaign/submission/$id'
+      fullPath: '/campaign/submission/$id'
+      preLoaderRoute: typeof NoLayoutCampaignSubmissionIdRouteImport
+      parentRoute: typeof NoLayoutRoute
     }
     '/_no-layout/campaign/approval/$id': {
       id: '/_no-layout/campaign/approval/$id'
@@ -240,14 +240,14 @@ const LayoutRouteWithChildren =
 
 interface NoLayoutRouteChildren {
   NoLayoutCampaignApproveRoute: typeof NoLayoutCampaignApproveRoute
-  NoLayoutCampaignSubmissionRoute: typeof NoLayoutCampaignSubmissionRoute
   NoLayoutCampaignApprovalIdRoute: typeof NoLayoutCampaignApprovalIdRoute
+  NoLayoutCampaignSubmissionIdRoute: typeof NoLayoutCampaignSubmissionIdRoute
 }
 
 const NoLayoutRouteChildren: NoLayoutRouteChildren = {
   NoLayoutCampaignApproveRoute: NoLayoutCampaignApproveRoute,
-  NoLayoutCampaignSubmissionRoute: NoLayoutCampaignSubmissionRoute,
   NoLayoutCampaignApprovalIdRoute: NoLayoutCampaignApprovalIdRoute,
+  NoLayoutCampaignSubmissionIdRoute: NoLayoutCampaignSubmissionIdRoute,
 }
 
 const NoLayoutRouteWithChildren = NoLayoutRoute._addFileChildren(

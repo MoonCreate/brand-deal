@@ -5,6 +5,7 @@ import { DashboardPage } from '@/features/dashboard/page'
 import { getProfile } from '@/hooks/use-get-profile'
 import { wagmiConfig } from '@/integrations/web3/provider'
 import { Profile } from '@/features/profile'
+import { LucideLoader } from 'lucide-react'
 
 export const Route = createFileRoute('/_layout/dashboard')({
   beforeLoad: async () => {

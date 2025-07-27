@@ -48,11 +48,11 @@ export function useGetCampaigns(
           const has = item.creatorPools.items.some(
             (it2) =>
               it2.creatorWalletAddress?.toLowerCase() ===
-              props.creator?.toLowerCase(),
+                props.creator?.toLowerCase() &&
+              item.status === 'OpenForApplication',
           )
           return has
         })
-
       }
 
       return result

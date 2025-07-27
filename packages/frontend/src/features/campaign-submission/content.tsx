@@ -1,11 +1,25 @@
-import { motion } from 'motion/react'
+import { useLoaderData, useParams } from '@tanstack/react-router'
+import { useForm } from 'react-hook-form'
+import type { SubmitCampaignDto } from '@/hooks/use-submit-campaign'
 import { Button } from '@/components/buttons/button'
 import { CampaignCard, ProfileCard } from '@/components/cards/card'
 import { DropZone } from '@/components/inputs/dropzone'
 import { SplitPopAnimation } from '@/components/text/split-pop-animation'
-import { pulseScale } from '@/lib/animation-const'
+import { useSubmitCampaign } from '@/hooks/use-submit-campaign'
+import { Textarea } from '@/components/textarea'
 
 export const CampaignSubmissionContent = () => {
+  const item = useLoaderData({
+    from: '/_no-layout/campaign/submission/$id',
+  }) as any
+  const [{ mutate, isPending }] = useSubmitCampaign()
+  const param = useParams({ from: '/_no-layout/campaign/submission/$id' })
+  const form = useForm<SubmitCampaignDto>()
+
+  const onSubmit = (data: SubmitCampaignDto) => {
+    mutate([param.id, data])
+  }
+
   return (
     <div className="w-full min-h-full my-10 flex flex-col grow relative">
       <div
@@ -20,23 +34,59 @@ export const CampaignSubmissionContent = () => {
             >
               Campaign
             </div>
-            <CampaignCard />
+            <CampaignCard
+              buttonChild={<></>}
+              data={{
+                label: item.status ?? '',
+                title: item.metadata?.name,
+                description: item.metadata?.description,
+                price: item.metadata.attributes[1].value,
+                category: 'Technology',
+                requirements: item.metadata?.requirements,
+                applications: item.creatorPools.items.length + '',
+                image: item.metadata?.image,
+                logo: item.brand.metadata?.image,
+                status: item.status!,
+                engagement: item.metadata.engagment,
+                deadline: item.metadata?.deadline,
+                brandLogo: item.brand.metadata.image,
+                brandName: item.brand.metadata.name,
+              }}
+            />
           </div>
         </div>
         <ProfileCard className="flex-1 rounded-3xl overflow-hidden z-10 relative">
-          <div className="font-karantina text-[3rem] text-center mt-10  absolute z-30 right-1/2 translate-x-1/2 text-white">
+          <div className="font-karantina text-[3rem] text-center text-white bg-primary">
             <SplitPopAnimation text="Campaign" />{' '}
             <SplitPopAnimation text="Submission" />
           </div>
-          <motion.div
-            animate={pulseScale}
-            className="absolute w-full z-10 h-full"
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            id="campaign-submission"
+            className="w-[calc(100%-2rem)] h-[calc(100%-7.5rem)] bg-primary font-roboto flex flex-col gap-2 p-5 text-white"
           >
-            <DropZone wrapperClassName="w-full h-full bg-primary rounded-3xl" />
-          </motion.div>
+            <DropZone
+              wrapperClassName="bg-primary rounded-3xl w-full"
+              onDrop={(e) => {
+                form.setValue('image', e![0])
+              }}
+            />
+            <label>
+              <Textarea
+                className="min-h-50 bg-surface-1 text-foreground font-karantina !text-5xl"
+                placeholder="Write your description"
+                {...form.register('description')}
+              />
+            </label>
+          </form>
           <div className="w-full h-12 bottom-0 left-0 bg-black/20 z-40 absolute shadow-2xl"></div>
           <div className="w-10 h-full bottom-0  bg-secondary z-40 absolute right-0 shadow-2xl "></div>
-          <Button className="absolute bottom-0 right-0 z-40 h-12 w-20 flex justify-center shadow-2xl shadow-black">
+          <Button
+            isLoading={isPending}
+            type="submit"
+            form="campaign-submission"
+            className="absolute bottom-0 right-0 z-40 h-12 w-20 flex justify-center shadow-2xl shadow-black"
+          >
             Submit
           </Button>
         </ProfileCard>

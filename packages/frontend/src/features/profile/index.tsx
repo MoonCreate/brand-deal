@@ -2,12 +2,12 @@ import { Facebook, Instagram, Twitter } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useMemo } from 'react'
 import { useAccount } from 'wagmi'
+import { Link } from '@tanstack/react-router'
 import type { Creator } from '@/types'
-import type { CampaignCardData } from '@/components/cards/card'
 import { CampaignCard, ProfileCard } from '@/components/cards/card'
 import { bop, pulseScale } from '@/lib/animation-const'
 import { useGetCampaigns } from '@/hooks/use-get-campaign'
-import { Button } from '@/components/buttons/button'
+import { getButtonStyle } from '@/components/buttons/button'
 
 function CampaignList() {
   const account = useAccount()
@@ -17,25 +17,23 @@ function CampaignList() {
 
   const processedData = useMemo(
     () =>
-      data?.campaigns.items.map(
-        (item) =>
-          ({
-            label: item.status ?? '',
-            title: item.metadata?.name,
-            description: item.metadata?.description,
-            price: item.stakedAmount!,
-            category: 'Technology',
-            requirements: item.metadata?.requirements,
-            applications: item.creatorPools.items.length + '',
-            image: item.metadata?.image,
-            logo: item.brand.metadata?.image,
-            status: item.status!,
-            engagement: item.metadata.engagment,
-            deadline: item.metadata?.deadline,
-            brandLogo: item.brand.metadata.image,
-            brandName: item.brand.metadata.name,
-          }) satisfies CampaignCardData,
-      ),
+      data?.campaigns.items.map((item) => ({
+        id: item.campaignNFTId,
+        label: item.status ?? '',
+        title: item.metadata?.name,
+        description: item.metadata?.description,
+        price: item.stakedAmount!,
+        category: 'Technology',
+        requirements: item.metadata?.requirements,
+        applications: item.creatorPools.items.length + '',
+        image: item.metadata?.image,
+        logo: item.brand.metadata?.image,
+        status: item.status!,
+        engagement: item.metadata.engagment,
+        deadline: item.metadata?.deadline,
+        brandLogo: item.brand.metadata.image,
+        brandName: item.brand.metadata.name,
+      })),
     [data],
   )
 
@@ -61,7 +59,15 @@ function CampaignList() {
           className="max-w-[280px]"
           key={i}
           data={x as never}
-          buttonChild={<Button>Withdraw</Button>}
+          buttonChild={
+            <Link
+              className={getButtonStyle('default')}
+              to={`/campaign/submission/$id`}
+              params={{ id: x.id }}
+            >
+              Submit
+            </Link>
+          }
         />
       ))}
     </div>
