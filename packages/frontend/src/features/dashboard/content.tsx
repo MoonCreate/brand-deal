@@ -4,14 +4,16 @@ import { motion } from 'motion/react'
 import { useMemo } from 'react'
 import { useAccount } from 'wagmi'
 import { CampaignCard } from '../../components/cards/card'
-import type { CampaignCardData } from '../../components/cards/card'
+import { SubmissionReview } from './submission-review'
 import type { Brand } from '@/types'
 import { Button, getButtonStyle } from '@/components/buttons/button'
 import { SocialCard } from '@/components/cards/social-card'
 import { useGetCampaigns } from '@/hooks/use-get-campaign'
 import { bop } from '@/lib/animation-const'
+import { dialogInjection } from '@/injection/dialog-injection'
 
 function CampaignList() {
+  const dialog = dialogInjection.use()
   const account = useAccount()
   const { data, isLoading } = useGetCampaigns({
     brand: account.address,
@@ -19,27 +21,24 @@ function CampaignList() {
 
   const processedData = useMemo(
     () =>
-      data?.campaigns.items.map(
-        (item) =>
-          ({
-            // @ts-ignore
-            id: item.campaignNFTId,
-            label: item.status ?? '',
-            title: item.metadata?.name,
-            description: item.metadata?.description,
-            price: item.stakedAmount!,
-            category: 'Technology',
-            requirements: item.metadata?.requirements,
-            applications: item.creatorPools.items.length + '',
-            image: item.metadata?.image,
-            logo: item.brand.metadata?.image,
-            status: item.status!,
-            engagement: item.metadata.engagment,
-            deadline: item.metadata?.deadline,
-            brandLogo: item.brand.metadata.image,
-            brandName: item.brand.metadata.name,
-          }) satisfies CampaignCardData,
-      ),
+      data?.campaigns.items.map((item) => ({
+        id: item.campaignNFTId,
+        label: item.status ?? '',
+        title: item.metadata?.name,
+        description: item.metadata?.description,
+        price: item.stakedAmount!,
+        category: 'Technology',
+        requirements: item.metadata?.requirements,
+        applications: item.creatorPools.items.length + '',
+        image: item.metadata?.image,
+        logo: item.brand.metadata?.image,
+        status: item.status!,
+        engagement: item.metadata.engagment,
+        deadline: item.metadata?.deadline,
+        brandLogo: item.brand.metadata.image,
+        brandName: item.brand.metadata.name,
+        submitMetadataURI: item.submitMetadataURI,
+      })),
     [data],
   )
 
@@ -66,13 +65,23 @@ function CampaignList() {
           key={i}
           data={x as never}
           buttonChild={
-            <Link
-              className={getButtonStyle('default')}
-              to={`/campaign/approval/$id`}
-              params={{ id: x.id }}
-            >
-              Review
-            </Link>
+            x.status === 'UnderReview' ? (
+              <Button
+                onClick={() => {
+                  dialog.open(<SubmissionReview item={x} />)
+                }}
+              >
+                Review
+              </Button>
+            ) : (
+              <Link
+                className={getButtonStyle('default')}
+                to={`/campaign/approval/$id`}
+                params={{ id: x.id }}
+              >
+                Choose Creator
+              </Link>
+            )
           }
         />
       ))}

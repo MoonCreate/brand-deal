@@ -1,566 +1,417 @@
 export const brandDealContractABI = [
   {
-    "type": "constructor",
-    "inputs": [
-      {
-        "name": "_brandNFT",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "_creatorNFT",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "_campaignContract",
-        "type": "address",
-        "internalType": "address"
-      }
+    inputs: [
+      { internalType: 'address', name: '_brandNFT', type: 'address' },
+      { internalType: 'address', name: '_creatorNFT', type: 'address' },
+      { internalType: 'address', name: '_campaignContract', type: 'address' },
     ],
-    "stateMutability": "nonpayable"
+    stateMutability: 'nonpayable',
+    type: 'constructor',
   },
   {
-    "type": "function",
-    "name": "assignCreatorToCampaign",
-    "inputs": [
+    inputs: [{ internalType: 'address', name: 'owner', type: 'address' }],
+    name: 'OwnableInvalidOwner',
+    type: 'error',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'account', type: 'address' }],
+    name: 'OwnableUnauthorizedAccount',
+    type: 'error',
+  },
+  {
+    anonymous: false,
+    inputs: [
       {
-        "name": "_campaignId",
-        "type": "uint256",
-        "internalType": "uint256"
+        indexed: true,
+        internalType: 'uint256',
+        name: 'brandNFTId',
+        type: 'uint256',
       },
       {
-        "name": "_creatorAddress",
-        "type": "address",
-        "internalType": "address"
-      }
+        indexed: true,
+        internalType: 'address',
+        name: 'brandAddress',
+        type: 'address',
+      },
+      { indexed: true, internalType: 'string', name: 'name', type: 'string' },
+      {
+        indexed: false,
+        internalType: 'string',
+        name: 'metadataURI',
+        type: 'string',
+      },
+      { indexed: false, internalType: 'uint256', name: 'NIB', type: 'uint256' },
     ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
+    name: 'BrandRegistered',
+    type: 'event',
   },
   {
-    "type": "function",
-    "name": "brandNFT",
-    "inputs": [],
-    "outputs": [
+    anonymous: false,
+    inputs: [
       {
-        "name": "",
-        "type": "address",
-        "internalType": "contract BrandNFT"
-      }
+        indexed: true,
+        internalType: 'uint256',
+        name: 'campaignId',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'approver',
+        type: 'address',
+      },
     ],
-    "stateMutability": "view"
+    name: 'CampaignApproved',
+    type: 'event',
   },
   {
-    "type": "function",
-    "name": "campaignContract",
-    "inputs": [],
-    "outputs": [
+    anonymous: false,
+    inputs: [
       {
-        "name": "",
-        "type": "address",
-        "internalType": "contract CampaignContract"
-      }
+        indexed: true,
+        internalType: 'uint256',
+        name: 'campaignNFTId',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'ownerCampaign',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'string',
+        name: 'campaignName',
+        type: 'string',
+      },
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'approvedCreator',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'stakedAmount',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'campaignDeadline',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'string',
+        name: 'campaignMetadataURI',
+        type: 'string',
+      },
     ],
-    "stateMutability": "view"
+    name: 'CampaignCreated',
+    type: 'event',
   },
   {
-    "type": "function",
-    "name": "cancelApply",
-    "inputs": [
+    anonymous: false,
+    inputs: [
       {
-        "name": "_campaignId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
+        indexed: true,
+        internalType: 'uint256',
+        name: 'campaignId',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'creatorAddress',
+        type: 'address',
+      },
     ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
+    name: 'CreatorApply',
+    type: 'event',
   },
   {
-    "type": "function",
-    "name": "createCampaign",
-    "inputs": [
+    anonymous: false,
+    inputs: [
       {
-        "name": "_campaignName",
-        "type": "string",
-        "internalType": "string"
+        indexed: true,
+        internalType: 'uint256',
+        name: 'campaignId',
+        type: 'uint256',
       },
       {
-        "name": "_rewards",
-        "type": "uint256",
-        "internalType": "uint256"
+        indexed: true,
+        internalType: 'address',
+        name: 'creatorAddress',
+        type: 'address',
       },
-      {
-        "name": "_deadline",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "_metadataURI",
-        "type": "string",
-        "internalType": "string"
-      }
     ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
+    name: 'CreatorAssigned',
+    type: 'event',
   },
   {
-    "type": "function",
-    "name": "creatorApplyToCampaign",
-    "inputs": [
+    anonymous: false,
+    inputs: [
       {
-        "name": "_campaignId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
+        indexed: true,
+        internalType: 'uint256',
+        name: 'campaignId',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'creator',
+        type: 'address',
+      },
     ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
+    name: 'CreatorCancelledApplyForCampaign',
+    type: 'event',
   },
   {
-    "type": "function",
-    "name": "creatorNFT",
-    "inputs": [],
-    "outputs": [
+    anonymous: false,
+    inputs: [
       {
-        "name": "",
-        "type": "address",
-        "internalType": "contract CreatorNFT"
-      }
+        indexed: true,
+        internalType: 'uint256',
+        name: 'creatorNFTId',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'creatorAddress',
+        type: 'address',
+      },
+      { indexed: true, internalType: 'string', name: 'name', type: 'string' },
+      {
+        indexed: false,
+        internalType: 'string',
+        name: 'metadataURI',
+        type: 'string',
+      },
     ],
-    "stateMutability": "view"
+    name: 'CreatorRegistered',
+    type: 'event',
   },
   {
-    "type": "function",
-    "name": "creatorPool",
-    "inputs": [
+    anonymous: false,
+    inputs: [
       {
-        "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
+        indexed: true,
+        internalType: 'address',
+        name: 'previousOwner',
+        type: 'address',
       },
       {
-        "name": "",
-        "type": "address",
-        "internalType": "address"
-      }
+        indexed: true,
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
+      },
     ],
-    "outputs": [
+    name: 'OwnershipTransferred',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
       {
-        "name": "",
-        "type": "bool",
-        "internalType": "bool"
-      }
+        indexed: true,
+        internalType: 'uint256',
+        name: 'campaignId',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'ownerCampaign',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'creatorAddress',
+        type: 'address',
+      },
     ],
-    "stateMutability": "view"
+    name: 'ResolveCampaign',
+    type: 'event',
   },
   {
-    "type": "function",
-    "name": "owner",
-    "inputs": [],
-    "outputs": [
+    anonymous: false,
+    inputs: [
       {
-        "name": "",
-        "type": "address",
-        "internalType": "address"
-      }
+        indexed: true,
+        internalType: 'uint256',
+        name: 'campaignId',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'creatorAddress',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'string',
+        name: 'submitMetadataUri',
+        type: 'string',
+      },
     ],
-    "stateMutability": "view"
+    name: 'SubmitTaskCreator',
+    type: 'event',
   },
   {
-    "type": "function",
-    "name": "registerBrand",
-    "inputs": [
+    anonymous: false,
+    inputs: [
       {
-        "name": "_instanceName",
-        "type": "string",
-        "internalType": "string"
+        indexed: true,
+        internalType: 'uint256',
+        name: 'campaignId',
+        type: 'uint256',
       },
       {
-        "name": "_metadataURI",
-        "type": "string",
-        "internalType": "string"
+        indexed: true,
+        internalType: 'address',
+        name: 'creatorAddress',
+        type: 'address',
       },
-      {
-        "name": "_NIB",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
     ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
+    name: 'TaskSubmittedForReview',
+    type: 'event',
   },
   {
-    "type": "function",
-    "name": "registerCreator",
-    "inputs": [
-      {
-        "name": "_name",
-        "type": "string",
-        "internalType": "string"
-      },
-      {
-        "name": "_metadataURI",
-        "type": "string",
-        "internalType": "string"
-      }
+    inputs: [
+      { internalType: 'uint256', name: '_campaignId', type: 'uint256' },
+      { internalType: 'address', name: '_creatorAddress', type: 'address' },
     ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
+    name: 'assignCreatorToCampaign',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
-    "type": "function",
-    "name": "renounceOwnership",
-    "inputs": [],
-    "outputs": [],
-    "stateMutability": "nonpayable"
+    inputs: [],
+    name: 'brandNFT',
+    outputs: [{ internalType: 'contract BrandNFT', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
   },
   {
-    "type": "function",
-    "name": "resolveCampaign",
-    "inputs": [
-      {
-        "name": "_campaignId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
+    inputs: [],
+    name: 'campaignContract',
+    outputs: [
+      { internalType: 'contract CampaignContract', name: '', type: 'address' },
     ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
+    stateMutability: 'view',
+    type: 'function',
   },
   {
-    "type": "function",
-    "name": "submitTaskCampaignCreator",
-    "inputs": [
-      {
-        "name": "_campaignId",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "_submitMetadataUri",
-        "type": "string",
-        "internalType": "string"
-      }
+    inputs: [{ internalType: 'uint256', name: '_campaignId', type: 'uint256' }],
+    name: 'cancelApply',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'string', name: '_campaignName', type: 'string' },
+      { internalType: 'uint256', name: '_rewards', type: 'uint256' },
+      { internalType: 'uint256', name: '_deadline', type: 'uint256' },
+      { internalType: 'string', name: '_metadataURI', type: 'string' },
     ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
+    name: 'createCampaign',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
-    "type": "function",
-    "name": "transferOwnership",
-    "inputs": [
-      {
-        "name": "newOwner",
-        "type": "address",
-        "internalType": "address"
-      }
+    inputs: [{ internalType: 'uint256', name: '_campaignId', type: 'uint256' }],
+    name: 'creatorApplyToCampaign',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'creatorNFT',
+    outputs: [
+      { internalType: 'contract CreatorNFT', name: '', type: 'address' },
     ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
+    stateMutability: 'view',
+    type: 'function',
   },
   {
-    "type": "event",
-    "name": "BrandRegistered",
-    "inputs": [
-      {
-        "name": "brandNFTId",
-        "type": "uint256",
-        "indexed": true,
-        "internalType": "uint256"
-      },
-      {
-        "name": "brandAddress",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "name",
-        "type": "string",
-        "indexed": true,
-        "internalType": "string"
-      },
-      {
-        "name": "metadataURI",
-        "type": "string",
-        "indexed": false,
-        "internalType": "string"
-      },
-      {
-        "name": "NIB",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      }
+    inputs: [
+      { internalType: 'uint256', name: '', type: 'uint256' },
+      { internalType: 'address', name: '', type: 'address' },
     ],
-    "anonymous": false
+    name: 'creatorPool',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'view',
+    type: 'function',
   },
   {
-    "type": "event",
-    "name": "CampaignApproved",
-    "inputs": [
-      {
-        "name": "campaignId",
-        "type": "uint256",
-        "indexed": true,
-        "internalType": "uint256"
-      },
-      {
-        "name": "approver",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      }
+    inputs: [],
+    name: 'owner',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'string', name: '_instanceName', type: 'string' },
+      { internalType: 'string', name: '_metadataURI', type: 'string' },
+      { internalType: 'uint256', name: '_NIB', type: 'uint256' },
     ],
-    "anonymous": false
+    name: 'registerBrand',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
-    "type": "event",
-    "name": "CampaignCreated",
-    "inputs": [
-      {
-        "name": "campaignNFTId",
-        "type": "uint256",
-        "indexed": true,
-        "internalType": "uint256"
-      },
-      {
-        "name": "ownerCampaign",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "campaignName",
-        "type": "string",
-        "indexed": true,
-        "internalType": "string"
-      },
-      {
-        "name": "approvedCreator",
-        "type": "address",
-        "indexed": false,
-        "internalType": "address"
-      },
-      {
-        "name": "stakedAmount",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      },
-      {
-        "name": "campaignDeadline",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      },
-      {
-        "name": "campaignMetadataURI",
-        "type": "string",
-        "indexed": false,
-        "internalType": "string"
-      }
+    inputs: [
+      { internalType: 'string', name: '_name', type: 'string' },
+      { internalType: 'string', name: '_metadataURI', type: 'string' },
     ],
-    "anonymous": false
+    name: 'registerCreator',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
-    "type": "event",
-    "name": "CreatorApply",
-    "inputs": [
-      {
-        "name": "campaignId",
-        "type": "uint256",
-        "indexed": true,
-        "internalType": "uint256"
-      },
-      {
-        "name": "creatorAddress",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      }
+    inputs: [],
+    name: 'renounceOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '_campaignId', type: 'uint256' }],
+    name: 'resolveCampaign',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: '_campaignId', type: 'uint256' },
+      { internalType: 'string', name: '_submitMetadataUri', type: 'string' },
     ],
-    "anonymous": false
+    name: 'submitTaskCampaignCreator',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
-    "type": "event",
-    "name": "CreatorAssigned",
-    "inputs": [
-      {
-        "name": "campaignId",
-        "type": "uint256",
-        "indexed": true,
-        "internalType": "uint256"
-      },
-      {
-        "name": "creatorAddress",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      }
-    ],
-    "anonymous": false
+    inputs: [{ internalType: 'address', name: 'newOwner', type: 'address' }],
+    name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
-  {
-    "type": "event",
-    "name": "CreatorCancelledApplyForCampaign",
-    "inputs": [
-      {
-        "name": "campaignId",
-        "type": "uint256",
-        "indexed": true,
-        "internalType": "uint256"
-      },
-      {
-        "name": "creator",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "CreatorRegistered",
-    "inputs": [
-      {
-        "name": "creatorNFTId",
-        "type": "uint256",
-        "indexed": true,
-        "internalType": "uint256"
-      },
-      {
-        "name": "creatorAddress",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "name",
-        "type": "string",
-        "indexed": true,
-        "internalType": "string"
-      },
-      {
-        "name": "metadataURI",
-        "type": "string",
-        "indexed": false,
-        "internalType": "string"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "OwnershipTransferred",
-    "inputs": [
-      {
-        "name": "previousOwner",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "newOwner",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "ResolveCampaign",
-    "inputs": [
-      {
-        "name": "campaignId",
-        "type": "uint256",
-        "indexed": true,
-        "internalType": "uint256"
-      },
-      {
-        "name": "ownerCampaign",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "creatorAddress",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "SubmitTaskCreator",
-    "inputs": [
-      {
-        "name": "campaignId",
-        "type": "uint256",
-        "indexed": true,
-        "internalType": "uint256"
-      },
-      {
-        "name": "creatorAddress",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "submitMetadataUri",
-        "type": "string",
-        "indexed": true,
-        "internalType": "string"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "TaskSubmittedForReview",
-    "inputs": [
-      {
-        "name": "campaignId",
-        "type": "uint256",
-        "indexed": true,
-        "internalType": "uint256"
-      },
-      {
-        "name": "creatorAddress",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "error",
-    "name": "OwnableInvalidOwner",
-    "inputs": [
-      {
-        "name": "owner",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "OwnableUnauthorizedAccount",
-    "inputs": [
-      {
-        "name": "account",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
-  }
-] as const;
+] as const

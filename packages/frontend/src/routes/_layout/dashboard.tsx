@@ -1,11 +1,11 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
+import { createFileRoute, redirect, useRouter } from '@tanstack/react-router'
 import { getAccount } from '@wagmi/core'
 import { useAccount } from 'wagmi'
+import { useEffect } from 'react'
 import { DashboardPage } from '@/features/dashboard/page'
 import { getProfile } from '@/hooks/use-get-profile'
 import { wagmiConfig } from '@/integrations/web3/provider'
 import { Profile } from '@/features/profile'
-import { LucideLoader } from 'lucide-react'
 
 export const Route = createFileRoute('/_layout/dashboard')({
   beforeLoad: async () => {
@@ -21,8 +21,21 @@ export const Route = createFileRoute('/_layout/dashboard')({
     return deps.context.profile
   },
   component: () => {
+    const router = useRouter()
     const data = Route.useLoaderData()
     const account = useAccount()
+
+    useEffect(() => {
+      if (
+        !account.isConnected &&
+        !account.isReconnecting &&
+        !account.isConnecting
+      )
+        router.invalidate({
+          filter: (r) => r.fullPath == '/dashboard',
+          sync: true,
+        })
+    }, [account])
 
     if (account.address && account.chain)
       return data.type === 'brand' ? (

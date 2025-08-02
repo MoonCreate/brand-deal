@@ -36,7 +36,7 @@ contract BrandDeal is Ownable {
     event SubmitTaskCreator(
         uint256 indexed campaignId,
         address indexed creatorAddress,
-        string indexed submitMetadataUri
+        string submitMetadataUri
     );
     event TaskSubmittedForReview(
         uint256 indexed campaignId,

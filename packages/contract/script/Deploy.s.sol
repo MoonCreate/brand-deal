@@ -21,7 +21,7 @@ contract DeployScript is Script {
         uint256 deployer = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(deployer);
 
-        mockUSDC = new MockUSDC();
+        mockUSDC = MockUSDC(0xc4d591E34878Cd8143f366a5d49c1e8c542B0915);
         brandNFT = new BrandNFT();
         campaignContract = new CampaignContract("test", address(mockUSDC));
         creatorNFT = new CreatorNFT();
