@@ -60,12 +60,11 @@ export function CampaignCard({
         'w-full h-[450px] min-w-[200px]  rounded-4xl relative border',
         className,
       )}
-      id="campaign-card"
       {...props}
     >
       <img
         src={props.data.image}
-        className="rounded-4xl w-full h-full border-2 border-muted-foreground/40"
+        className="rounded-4xl object-cover w-full h-full border-2 border-muted-foreground/40"
       />
       <div
         id="label"
@@ -75,19 +74,18 @@ export function CampaignCard({
       </div>
 
       <div
-        id="content"
         className="absolute bottom-2 w-[95%] rounded-4xl left-2 flex flex-col "
       >
         <div className="w-full h-max bg-surface-1 shadow-md border rounded-4xl p-2 flex gap-4 mt-auto relative isolate">
           <div className="absolute rounded-full top-0 -translate-y-1/2 left-2">
             <img
               src={props.data.brandLogo}
-              className="w-[90px] h-[90px] rounded-full border-2 border-muted-foreground/5 bg-green-50 shadow-2xl shadow-muted-foreground/20"
+              className="w-[90px] h-[90px] object-contain rounded-full border-2 border-muted-foreground/5 bg-green-50 shadow-2xl shadow-muted-foreground/20"
             />
           </div>
           {/* LEFT CONTENT  */}
           <div className="w-[92px]  rounded-l-4xl  mt-8">
-            <div className="font-bold text-muted-foreground text-lg ml-1 text-nowrap">
+            <div className="font-bold text-muted-foreground text-lg ml-1">
               {props.data.brandName}
             </div>
 
@@ -124,7 +122,7 @@ export function CampaignCard({
             id="child-content"
             className="w-full rounded-r-4xl px-2 text-base text-muted-foreground flex flex-col"
           >
-            <div className=" font-semibold text-black text-nowrap">
+            <div className=" font-semibold text-black">
               {props.data.title}
             </div>
             <div className="w-4/5 text-xs">{props.data.description}</div>
