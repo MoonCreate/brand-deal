@@ -4,7 +4,7 @@ import toast from 'react-hot-toast'
 import { waitForTransactionReceipt } from '@wagmi/core'
 import { brandDealAddress } from '@/integrations/contract'
 import { brandDealContractABI } from '@/integrations/contract/abis/brand-deal-abi'
-import { createBlockExplorerLink } from '@/lib/utils'
+import { createToastTx } from '@/lib/toast'
 
 export function useApplyCampaign() {
   const config = useConfig()
@@ -15,12 +15,7 @@ export function useApplyCampaign() {
       },
 
       onSuccess: (tx) => {
-        toast.loading(
-          `Transaction hash generated\n${createBlockExplorerLink(tx)}`,
-          {
-            id: 'register-brand',
-          },
-        )
+        createToastTx(tx, 'register-brand')
       },
     },
   })

@@ -5,7 +5,8 @@ import { waitForTransactionReceipt } from '@wagmi/core'
 import { brandDealAddress } from '@/integrations/contract'
 import { brandDealContractABI } from '@/integrations/contract/abis/brand-deal-abi'
 import { backend } from '@/integrations/hono-api'
-import { createBlockExplorerLink, createIPFSGatewayURL } from '@/lib/utils'
+import { createIPFSGatewayURL } from '@/lib/utils'
+import { createToastTx } from '@/lib/toast'
 
 type RegistercreatorDto = Parameters<
   typeof backend.api.register.creator.$post
@@ -19,19 +20,14 @@ export function useRegistercreator() {
       },
 
       onSuccess: (tx) => {
-        toast.loading(
-          `Transaction hash generated\n${createBlockExplorerLink(tx)}`,
-          {
-            id: 'register-creator',
-          },
-        )
+        createToastTx(tx, 'register-creator')
       },
     },
   })
   const mutation = useMutation({
     mutationKey: ['registerCreator'],
     onMutate: () => {
-      toast.loading('Registering creator...', { id: 'register-brand' })
+      toast.loading('Registering creator...', { id: 'register-creator' })
     },
 
     onSuccess: () => {
@@ -42,7 +38,7 @@ export function useRegistercreator() {
 
     onError: (error) => {
       console.error(error)
-      toast.error('Failed to register creator', { id: 'register-brand' })
+      toast.error('Failed to register creator', { id: 'register-creator' })
     },
 
     mutationFn: async (dto: RegistercreatorDto) => {
@@ -58,7 +54,7 @@ export function useRegistercreator() {
         address: brandDealAddress,
         functionName: 'registerCreator',
         // @ts-expect-error hahah
-        args: [dto.name, createIPFSGatewayURL(metadata.cid)]
+        args: [dto.name, createIPFSGatewayURL(metadata.cid)],
       })
 
       return waitForTransactionReceipt(config, { hash })

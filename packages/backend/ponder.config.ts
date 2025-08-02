@@ -18,27 +18,27 @@ export default createConfig({
       chain: "liskTestnet",
       abi: BrandABI,
       address: process.env.BRAND_ADDRESS as `0x${string}`,
-      startBlock: 23681094,
+      startBlock: 24391095,
       // endBlock: 24459809,
     },
     Creator: {
       chain: "liskTestnet",
       abi: CreatorABI,
       address: process.env.CREATOR_ADDRESS as `0x${string}`,
-      startBlock: 23681094,
+      startBlock: 24391095,
       // endBlock: 24459809,
     },
     Campaign: {
       chain: "liskTestnet",
       abi: CampaignABI,
-      startBlock: 23681094,
+      startBlock: 24391095,
       // endBlock: 24459809,
       address: process.env.CAMPAIGN_ADDRESS as `0x${string}`
     },
     BrandDeal: {
       chain: "liskTestnet",
       abi: BrandDealABI,
-      startBlock: 23681094,
+      startBlock: 24391095,
       // endBlock: 24459809,
       address: process.env.BRAND_DEAL_ADDRESS as `0x${string}`
     },
@@ -47,7 +47,7 @@ export default createConfig({
     ChainlinkOracleUpdate: {
       chain: "liskTestnet",
       interval: 10, // Every 10 blocks
-      startBlock: 23681094,
+      startBlock: 24391095,
     },
   },
 });

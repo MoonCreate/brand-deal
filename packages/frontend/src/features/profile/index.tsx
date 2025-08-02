@@ -53,20 +53,22 @@ function CampaignList() {
       ></motion.div>
     </div>
   ) : (
-    <div className="grid relative z-10 grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-5">
+    <div className="relative z-10 flex gap-5 flex-wrap">
       {processedData?.map((x, i) => (
         <CampaignCard
           className="max-w-[280px]"
           key={i}
           data={x as never}
           buttonChild={
-            <Link
-              className={getButtonStyle('default')}
-              to={`/campaign/submission/$id`}
-              params={{ id: x.id }}
-            >
-              Submit
-            </Link>
+            x.status !== 'UnderReview' && (
+              <Link
+                className={getButtonStyle('default')}
+                to={`/campaign/submission/$id`}
+                params={{ id: x.id }}
+              >
+                Submit
+              </Link>
+            )
           }
         />
       ))}

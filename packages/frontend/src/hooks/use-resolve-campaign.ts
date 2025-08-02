@@ -2,9 +2,9 @@ import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { useConfig, useWriteContract } from 'wagmi'
 import { waitForTransactionReceipt } from '@wagmi/core'
-import { createBlockExplorerLink } from '@/lib/utils'
 import { brandDealAddress } from '@/integrations/contract'
 import { brandDealContractABI } from '@/integrations/contract/abis/brand-deal-abi'
+import { createToastTx } from '@/lib/toast'
 
 export function useResolveCampaign() {
   const config = useConfig()
@@ -15,12 +15,7 @@ export function useResolveCampaign() {
       },
 
       onSuccess: (tx) => {
-        toast.loading(
-          `Transaction hash generated\n${createBlockExplorerLink(tx)}`,
-          {
-            id: 'resolve-campaign',
-          },
-        )
+        createToastTx(tx, 'resolve-campaign')
       },
     },
   })

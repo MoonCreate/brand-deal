@@ -48,8 +48,8 @@ export function BrandListCards() {
           >
             <img
               className="object-cover h-full w-[326.54px] rounded-xl"
-              src={brands?.[brandIndex].metadata.image}
-              alt={brands?.[brandIndex].metadata.name}
+              src={brands?.[brandIndex]?.metadata?.image}
+              alt={brands?.[brandIndex]?.metadata?.name}
             />
           </div>
           <h2
@@ -59,7 +59,7 @@ export function BrandListCards() {
               isLoading && 'animate-pulse bg-surface-2 rounded-xl',
             )}
           >
-            <SplitPopAnimation text={brands?.[brandIndex].metadata.name} />
+            <SplitPopAnimation text={brands?.[brandIndex]?.metadata?.name} />
           </h2>
           <p>{!isLoading && 'Brand'}</p>
           {!isLoading && (

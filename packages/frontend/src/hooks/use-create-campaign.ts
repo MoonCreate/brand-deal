@@ -9,8 +9,9 @@ import {
 } from '@/integrations/contract'
 import { brandDealContractABI } from '@/integrations/contract/abis/brand-deal-abi'
 import { backend } from '@/integrations/hono-api'
-import { createBlockExplorerLink, createIPFSGatewayURL } from '@/lib/utils'
+import { createIPFSGatewayURL } from '@/lib/utils'
 import { erc20Abi } from 'viem'
+import { createToastTx } from '@/lib/toast'
 
 export type CreateCampaignDto = {
   name: string
@@ -30,12 +31,7 @@ export function useCreateCampaign() {
       },
 
       onSuccess: (tx) => {
-        toast.loading(
-          `Transaction hash generated\n${createBlockExplorerLink(tx)}`,
-          {
-            id: 'create-campaign',
-          },
-        )
+        createToastTx(tx, 'create-campaign')
       },
     },
   })

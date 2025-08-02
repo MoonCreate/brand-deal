@@ -1,4 +1,4 @@
-import { CalendarDaysIcon, DollarSign, Eye, Users } from 'lucide-react'
+import { DollarSign } from 'lucide-react'
 
 import { motion } from 'motion/react'
 
@@ -56,7 +56,10 @@ export function CampaignCard({
     <motion.div
       animate={flipCard}
       whileHover={{ scale: 1.05 }}
-      className={cn('w-full h-[450px]  rounded-4xl relative border', className)}
+      className={cn(
+        'w-full h-[450px] min-w-[200px]  rounded-4xl relative border',
+        className,
+      )}
       id="campaign-card"
       {...props}
     >
@@ -73,16 +76,22 @@ export function CampaignCard({
 
       <div
         id="content"
-        className="absolute bottom-2 w-[95%] h-[200px] rounded-4xl left-2"
+        className="absolute bottom-2 w-[95%] rounded-4xl left-2 flex flex-col "
       >
-        <div className="w-full h-full bg-surface-1 shadow-md border rounded-4xl p-2 flex gap-4">
+        <div className="w-full h-max bg-surface-1 shadow-md border rounded-4xl p-2 flex gap-4 mt-auto relative isolate">
+          <div className="absolute rounded-full top-0 -translate-y-1/2 left-2">
+            <img
+              src={props.data.brandLogo}
+              className="w-[90px] h-[90px] rounded-full border-2 border-muted-foreground/5 bg-green-50 shadow-2xl shadow-muted-foreground/20"
+            />
+          </div>
           {/* LEFT CONTENT  */}
-          <div className="w-[92px] h-4/5  rounded-l-4xl  mt-8">
-            <div className="font-bold text-muted-foreground text-lg ml-1">
+          <div className="w-[92px]  rounded-l-4xl  mt-8">
+            <div className="font-bold text-muted-foreground text-lg ml-1 text-nowrap">
               {props.data.brandName}
             </div>
 
-            <div className="*:data-[slot=avatar]:ring-background flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:grayscale absolute">
+            <div className="*:data-[slot=avatar]:ring-background flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:grayscale relative isolate">
               <Avatar>
                 <AvatarImage
                   src="https://github.com/shadcn.png"
@@ -113,40 +122,27 @@ export function CampaignCard({
           {/* RIGHT CONTENT  */}
           <div
             id="child-content"
-            className="w-full rounded-r-4xl px-2 text-[9px] text-muted-foreground flex flex-col"
+            className="w-full rounded-r-4xl px-2 text-base text-muted-foreground flex flex-col"
           >
-            <div id="title" className="text-[11px] font-semibold text-black">
+            <div className=" font-semibold text-black text-nowrap">
               {props.data.title}
             </div>
-            <div id="description" className="w-4/5">
-              {props.data.description}
-            </div>
+            <div className="w-4/5 text-xs">{props.data.description}</div>
 
-            <div
-              id="line-1"
-              className="w-full h-4 mt-3 flex justify-between items-center"
-            >
-              <div className="flex items-center">
-                <DollarSign className="w-3 h-3" />
+            <div className="w-full flex justify-between items-center my-4">
+              <div className="flex items-center text-2xl font-bold text-blacked rounded-md text-nowrap">
+                <DollarSign className="" />
                 {+props.data.price / 10 ** 6} USDC
               </div>
             </div>
 
             <div className="mt-auto text-base ml-auto mb-3">
-              {props.buttonChild}
+              {props.data.status == 'CompletedAndPaid'
+                ? undefined
+                : props.buttonChild}
             </div>
           </div>
         </div>
-      </div>
-
-      <div
-        id="camera-campaign-card"
-        className="absolute rounded-full bottom-40 left-2"
-      >
-        <img
-          src={props.data.brandLogo}
-          className="w-[90px] h-[90px] rounded-full border-2 border-muted-foreground/5 bg-green-50 shadow-2xl shadow-muted-foreground/20"
-        />
       </div>
     </motion.div>
   )

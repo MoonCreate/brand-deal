@@ -3,11 +3,10 @@ import toast from 'react-hot-toast'
 import { useConfig, useWriteContract } from 'wagmi'
 import { waitForTransactionReceipt } from '@wagmi/core'
 import { backend } from '@/integrations/hono-api'
-import { createBlockExplorerLink, createIPFSGatewayURL } from '@/lib/utils'
+import { createIPFSGatewayURL } from '@/lib/utils'
 import { brandDealAddress } from '@/integrations/contract'
 import { brandDealContractABI } from '@/integrations/contract/abis/brand-deal-abi'
-
-// TODO: Not FINISH
+import { createToastTx } from '@/lib/toast'
 
 export type SubmitCampaignDto = Parameters<
   typeof backend.api.campaign.submit.$post
@@ -22,12 +21,7 @@ export function useSubmitCampaign() {
       },
 
       onSuccess: (tx) => {
-        toast.loading(
-          `Transaction hash generated\n${createBlockExplorerLink(tx)}`,
-          {
-            id: 'submit-campaign',
-          },
-        )
+        createToastTx(tx, 'submit-campaign')
       },
     },
   })

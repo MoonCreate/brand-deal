@@ -22,7 +22,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         {/* FOOTER */}
         <footer className="bg-primary shadow-inner py-20 space-y-10">
           <h2 className="text-9xl font-karantina text-white mx-auto w-max">
-            Kollabora
+            KOLABORA
           </h2>
           <div className="flex justify-evenly text-white [&>svg]:size-10 w-200 mx-auto">
             <LucideGithub />
@@ -31,7 +31,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
             <LucideTwitter />
           </div>
           <div className="text-xs text-white w-96 mx-auto text-center">
-            ©2024-2025 Kollabora. Hak Cipta Dilindungi Undang-Undang. Merek
+            ©2024-2025 KOLABORA. Hak Cipta Dilindungi Undang-Undang. Merek
             dagang dari PT Jadi Dulu, perusahaan terdaftar di Indonesia.
           </div>
         </footer>

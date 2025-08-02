@@ -36,22 +36,25 @@ export const CampaignSubmissionContent = () => {
             </div>
             <CampaignCard
               buttonChild={<></>}
-              data={{
-                label: item.status ?? '',
-                title: item.metadata?.name,
-                description: item.metadata?.description,
-                price: item.metadata.attributes[1].value,
-                category: 'Technology',
-                requirements: item.metadata?.requirements,
-                applications: item.creatorPools.items.length + '',
-                image: item.metadata?.image,
-                logo: item.brand.metadata?.image,
-                status: item.status!,
-                engagement: item.metadata.engagment,
-                deadline: item.metadata?.deadline,
-                brandLogo: item.brand.metadata.image,
-                brandName: item.brand.metadata.name,
-              }}
+              data={
+                {
+                  label: item.status ?? '',
+                  title: item.metadata?.name,
+                  description: item.metadata?.description,
+                  price:
+                    (item.metadata.attributes[1].value as number) * 10 ** 6,
+                  category: 'Technology',
+                  requirements: item.metadata?.requirements,
+                  applications: item.creatorPools.items.length + '',
+                  image: item.metadata?.image,
+                  logo: item.brand.metadata?.image,
+                  status: item.status!,
+                  engagement: item.metadata.engagment,
+                  deadline: item.metadata?.deadline,
+                  brandLogo: item.brand.metadata.image,
+                  brandName: item.brand.metadata.name,
+                } as never
+              }
             />
           </div>
         </div>

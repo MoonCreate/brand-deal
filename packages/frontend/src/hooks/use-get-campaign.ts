@@ -3,7 +3,7 @@ import type { Address } from 'viem'
 import { mobius } from '@/integrations/hono-graphql'
 
 export function useGetCampaigns(
-  props: { creator?: Address; brand?: Address } = {},
+  props: { creator?: Address; brand?: Address; withCreator?: boolean } = {},
 ) {
   return useQuery({
     queryKey: ['campaigns', props],
@@ -50,7 +50,9 @@ export function useGetCampaigns(
             (it2) =>
               it2.creatorWalletAddress?.toLowerCase() ===
                 props.creator?.toLowerCase() &&
-              item.status === 'OpenForApplication',
+              (item.status === 'OpenForApplication' ||
+                item.status === 'Assigned' ||
+                item.status === 'UnderReview'),
           )
           return has
         })

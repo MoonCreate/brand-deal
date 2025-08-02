@@ -1,6 +1,28 @@
 import { motion } from 'motion/react'
+import { LucideBlocks, LucideLock, LucideTriangle } from 'lucide-react'
 import { Melt } from './melt'
 import { bop } from '@/lib/animation-const'
+
+const features = [
+  {
+    icon: LucideLock,
+    title: 'Secure',
+    description:
+      'All campaign agreements and payments are locked in smart contracts, ensuring tamper-proof protection for both brands and creators.',
+  },
+  {
+    icon: LucideTriangle,
+    title: 'Transparent',
+    description:
+      'Every step—from application to payment—is visible on-chain, allowing full visibility for brands and creators alike.',
+  },
+  {
+    icon: LucideBlocks,
+    title: 'Decentralized',
+    description:
+      'No central authority controls the platform. Kolabora runs on a trustless system where smart contracts automate and enforce rules.',
+  },
+]
 
 export function OurFeatureSection() {
   return (
@@ -13,16 +35,18 @@ export function OurFeatureSection() {
           WHATS OUR FEATURE
         </h2>
         <div className="flex gap-10 mx-auto my-auto">
-          {Array.from({ length: 3 }, (_, i) => (
+          {features.map((feature, i) => (
             <motion.div
-              whileInView={{...bop, transitionDelay: i * 100000}}
+              whileInView={{ ...bop, transitionDelay: i * 100000 }}
               className="flex flex-col self-center h-92 w-70 origin-left"
               key={i}
             >
               <div className="bg-surface-1 pb-2 pt-6 px-6 rounded-b-xl shadow-box grow rounded-tr-xl text-blacked flex flex-col">
-                <div className="bg-surface-2 h-40 rounded-md"></div>
-                <h2 className="text-4xl font-karantina mt-auto">Lorem Ipsum</h2>
-                <p className="text-lg">Lorem Ipsum Dolor Sit Amet,</p>
+                <feature.icon className="size-20" />
+                <h2 className="text-4xl font-karantina mt-auto">
+                  {feature.title}
+                </h2>
+                <p className="text-lg">{feature.description}</p>
                 <div className="ml-auto flex gap-2 mt-6">
                   <div className="size-3 rounded-full bg-blacked"></div>
                   <div className="size-3 rounded-full bg-blacked"></div>

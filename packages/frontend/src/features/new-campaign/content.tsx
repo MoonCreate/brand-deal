@@ -72,7 +72,7 @@ export const NewCampaignContent = () => {
               <div className="text-[40px]">Deadline</div>
               <Input
                 className="bg-white shadow-md !text-3xl"
-                type="date"
+                type="datetime-local"
                 onChange={(e) => {
                   const date = new Date(e.target.value)
                   const now = Date.now()

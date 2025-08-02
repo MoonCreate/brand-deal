@@ -1,17 +1,18 @@
 import { useConfig, useWriteContract } from 'wagmi'
 import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
-import { waitForTransactionReceipt} from '@wagmi/core';
+import { waitForTransactionReceipt } from '@wagmi/core'
 import { brandDealAddress } from '@/integrations/contract'
 import { brandDealContractABI } from '@/integrations/contract/abis/brand-deal-abi'
 import { backend } from '@/integrations/hono-api'
-import { createBlockExplorerLink, createIPFSGatewayURL } from '@/lib/utils'
+import { createIPFSGatewayURL } from '@/lib/utils'
+import { createToastTx } from '@/lib/toast'
 
 type RegisterBrandDto = Parameters<
   typeof backend.api.register.brand.$post
 >[0]['form']
 export function useRegisterBrand() {
-  const config = useConfig();
+  const config = useConfig()
   const { writeContractAsync, ...restContracts } = useWriteContract({
     mutation: {
       onMutate: () => {
@@ -19,12 +20,7 @@ export function useRegisterBrand() {
       },
 
       onSuccess: (tx) => {
-        toast.loading(
-          `Transaction hash generated\n${createBlockExplorerLink(tx)}`,
-          {
-            id: 'register-brand',
-          },
-        )
+        createToastTx(tx, 'register-brand')
       },
     },
   })
@@ -41,7 +37,7 @@ export function useRegisterBrand() {
     },
 
     onError: (error) => {
-      console.error(error);
+      console.error(error)
       toast.error('Failed to register brand', { id: 'register-brand' })
     },
 
@@ -65,7 +61,7 @@ export function useRegisterBrand() {
         ],
       })
 
-      return waitForTransactionReceipt(config, { hash });
+      return waitForTransactionReceipt(config, { hash })
     },
   })
 

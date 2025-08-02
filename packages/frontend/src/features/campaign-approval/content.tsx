@@ -45,7 +45,7 @@ export const CampaignApprovalContent = () => {
               label: item.status ?? '',
               title: item.metadata?.name,
               description: item.metadata?.description,
-              price: item.metadata.attributes[1].value,
+              price: item.metadata.attributes[1].value  * 10 ** 6,
               category: 'Technology',
               requirements: item.metadata?.requirements,
               applications: item.creatorPools.items.length + '',
@@ -56,7 +56,7 @@ export const CampaignApprovalContent = () => {
               deadline: item.metadata?.deadline,
               brandLogo: item.brand.metadata.image,
               brandName: item.brand.metadata.name,
-            }}
+            } as never}
           />
         </div>
       </div>
