@@ -43,4 +43,11 @@ export default createConfig({
       address: process.env.BRAND_DEAL_ADDRESS as `0x${string}`
     },
   },
+  blocks: {
+    ChainlinkOracleUpdate: {
+      chain: "etherlinkTestnet",
+      interval: 10, // Every 10 blocks
+      startBlock: 20872347,
+    },
+  },
 });
