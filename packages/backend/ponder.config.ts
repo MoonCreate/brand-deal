@@ -8,8 +8,9 @@ export default createConfig({
   chains: {
     etherlinkTestnet: {
       id: 128123,
-      rpc: "https://node.ghostnet.etherlink.com",
+      rpc: "https://rpc.ankr.com/etherlink_testnet",
       disableCache: false,
+      pollingInterval: 2000
     },
   },
 
@@ -41,13 +42,6 @@ export default createConfig({
       startBlock: 20872347,
       // endBlock: 24459809,
       address: process.env.BRAND_DEAL_ADDRESS as `0x${string}`
-    },
-  },
-  blocks: {
-    ChainlinkOracleUpdate: {
-      chain: "etherlinkTestnet",
-      interval: 10, // Every 10 blocks
-      startBlock: 20872347,
     },
   },
 });
