@@ -25,5 +25,5 @@ export function createIPFSGatewayURL(cid: string) {
 }
 
 export function createBlockExplorerLink(link: string) {
-  return `https://sepolia-blockscout.lisk.com/tx/${link}`
+  return `https://testnet.explorer.etherlink.com/tx/${link}`
 }

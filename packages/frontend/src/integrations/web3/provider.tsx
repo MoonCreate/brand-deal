@@ -1,7 +1,7 @@
 import { WagmiProvider } from 'wagmi'
 import { XellarKitProvider, darkTheme, defaultConfig } from '@xellar/kit'
 import { Provider } from '../tanstack-query/root-provider'
-import { lisk, liskSepolia } from 'viem/chains'
+import { lisk, liskSepolia, etherlinkTestnet, etherlink } from 'viem/chains'
 
 export const wagmiConfig = defaultConfig({
   appName: 'Xellar',
@@ -9,7 +9,7 @@ export const wagmiConfig = defaultConfig({
   xellarAppId: 'cc1ec5df-f51b-4b65-adef-6ce93a1430dc',
   xellarEnv: 'sandbox',
   ssr: false,
-  chains: [lisk, liskSepolia],
+  chains: [lisk, liskSepolia, etherlinkTestnet, etherlink],
 })
 
 export function Web3Provider({ children }: { children: React.ReactNode }) {
