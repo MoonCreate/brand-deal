@@ -2,6 +2,9 @@
   "name": "brand-deal",
   "type": "module",
   "private": true,
+  "engines": {
+    "node": "23.x"
+  },
   "scripts": {
     "dev:frontend": "cd packages/frontend && bun run dev",
     "dev:backend": "cd packages/backend && bun run dev"
