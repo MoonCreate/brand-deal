@@ -8,9 +8,10 @@ export default createConfig({
   chains: {
     etherlinkTestnet: {
       id: 128123,
-      rpc: "https://rpc.ankr.com/etherlink_testnet",
+      rpc: "https://128123.rpc.thirdweb.com/3c293f82e6e77f130220ed84ebce68cf",
       disableCache: false,
-      pollingInterval: 2000
+      pollingInterval: 10000,
+      maxRequestsPerSecond: 50,
     },
   },
 
